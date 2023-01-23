@@ -1135,6 +1135,26 @@ spec:RegisterAbilities( {
         end,
     },
 
+    wailing_arrow = {
+        id = 392060,
+        cast = function () return 1.8 * haste end,
+        cooldown = 60,
+        gcd = "spell",
+
+        spend = 15,
+        spendType = "focus",
+
+        talent = "wailing_arrow",
+        startsCombat = true,
+
+        usable = function ()
+            if action.wailing_arrow.cast > 0 and moving and settings.prevent_hardcasts then return false, "prevent_hardcasts is checked and player is moving" end
+            return true
+        end,
+
+        handler = function ()
+        end,
+    },
 
     wild_kingdom = {
         id = 356707,
@@ -1171,8 +1191,8 @@ spec:RegisterOptions( {
 
 
 spec:RegisterSetting( "prevent_hardcasts", false, {
-    name = "Prevent Hardcasts of |T135130:0|t Aimed Shot During Movement",
-    desc = "If checked, the addon will not recommend |T135130:0|t Aimed Shot if it has a cast time and you are moving.",
+    name = "Prevent Hardcasts of |T135130:0|t Aimed Shot and |T132323:0|t Wailing Arrow During Movement",
+    desc = "If checked, the addon will not recommend |T135130:0|t Aimed Shot or |T132323:0|t Wailing Arrow if it has a cast time and you are moving.",
     type = "toggle",
     width = "full"
 } )
