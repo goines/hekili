@@ -1558,8 +1558,8 @@ do
             if type( x ) == "number" then
                 if x > 0 and x >= state.delayMin and x <= state.delayMax then
                     t[ x ] = true
-                elseif x < 60 then
-                    if Hekili.ActiveDebug then Hekili:Debug( "Excluded %.2f recheck time as it is outside our constraints ( %.2f - %.2f ).", x, state.delayMin or -1, state.delayMax or -1 ) end
+                -- elseif x < 60 then
+                --     if Hekili.ActiveDebug then Hekili:Debug( "Excluded %.2f recheck time as it is outside our constraints ( %.2f - %.2f ).", x, state.delayMin or -1, state.delayMax or -1 ) end
                 end
             end
         end
@@ -2786,6 +2786,17 @@ do
                 if state.args.cycle_target == 1 then return UnitGUID( "target" ) .. "c" or "cycle"
                 elseif state.args.target then return ( UnitGUID( "target" ) .. '+' .. state.args.target ) or "unknown" end
                 return UnitGUID( "target" ) or "unknown"
+
+            elseif k == "npcid" then
+                if UnitExists( "target" ) then
+                    local id = UnitGUID( "target" )
+                    id = id and id:match( "(%d+)-%x-$" )
+                    id = id and tonumber( id )
+
+                    return id or -1
+                end
+
+                return -1
 
             end
 
