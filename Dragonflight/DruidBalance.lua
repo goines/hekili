@@ -509,6 +509,11 @@ spec:RegisterAuras( {
         max_stack = 1,
         copy = 197625
     },
+    natures_grace = {
+        id = 393959,
+        duration = 6,
+        max_stack = 1
+    },
     -- Talent: $?s137012[Single-target healing also damages a nearby enemy target for $w3% of the healing done][Single-target damage also heals a nearby friendly target for $w3% of the damage done].
     -- https://wowhead.com/beta/spell=124974
     natures_vigil = {
@@ -524,6 +529,11 @@ spec:RegisterAuras( {
         duration = 10,
         type = "Magic",
         max_stack = function () return pvptalent.owlkin_adept.enabled and 2 or 1 end
+    },
+    parting_skies = {
+        id = 395110,
+        duration = 60,
+        max_stack = 1,
     },
     -- Cost of Starsurge and Starfall reduced by $w1%, and their damage increased by $w2%.
     -- https://wowhead.com/beta/spell=393955
@@ -1325,6 +1335,14 @@ spec:RegisterStateTable( "eclipse", setmetatable( {
         if set_bonus.tier29_2pc > 0 then applyBuff( "celestial_infusion" ) end
         applyBuff( "eclipse_solar", ( duration or class.auras.eclipse_solar.duration ) + buff.eclipse_solar.remains )
 
+        if buff.parting_skies.up then
+            removeBuff( "parting_skies" )
+            applyDebuff( "target", "fury_of_elune", 8 )
+            applyBuff( "fury_of_elune_ap", 8 )
+        elseif talent.parting_skies.enabled then
+            applyBuff( "parting_skies" )
+        end
+
         state:QueueAuraExpiration( "ca_inc", ExpireCelestialAlignment, buff.ca_inc.expires )
         state:RemoveAuraExpiration( "eclipse_solar" )
         state:QueueAuraExpiration( "eclipse_solar", ExpireEclipseSolar, buff.eclipse_solar.expires )
@@ -1346,6 +1364,13 @@ spec:RegisterStateTable( "eclipse", setmetatable( {
                 eclipse.state = "IN_SOLAR"
                 eclipse.starfire_counter = 0
                 eclipse.wrath_counter = 2
+                if buff.parting_skies.up then
+                    removeBuff( "parting_skies" )
+                    applyDebuff( "target", "fury_of_elune", 8 )
+                    applyBuff( "fury_of_elune_ap", 8 )
+                elseif talent.parting_skies.enabled then
+                    applyBuff( "parting_skies" )
+                end
                 if Hekili.ActiveDebug then Hekili:Debug( "Eclipse Advance (Post): %s - Starfire(%d), Wrath(%d), Solar(%.2f), Lunar(%.2f)", eclipse.state, eclipse.starfire_counter, eclipse.wrath_counter, buff.eclipse_solar.remains, buff.eclipse_lunar.remains ) end
                 return
             end
@@ -1361,6 +1386,13 @@ spec:RegisterStateTable( "eclipse", setmetatable( {
                 eclipse.wrath_counter = 0
                 eclipse.starfire_counter = 2
                 if Hekili.ActiveDebug then Hekili:Debug( "Eclipse Advance (Post): %s - Starfire(%d), Wrath(%d), Solar(%.2f), Lunar(%.2f)", eclipse.state, eclipse.starfire_counter, eclipse.wrath_counter, buff.eclipse_solar.remains, buff.eclipse_lunar.remains ) end
+                if buff.parting_skies.up then
+                    removeBuff( "parting_skies" )
+                    applyDebuff( "target", "fury_of_elune", 8 )
+                    applyBuff( "fury_of_elune_ap", 8 )
+                elseif talent.parting_skies.enabled then
+                    applyBuff( "parting_skies" )
+                end
                 return
             end
         end
@@ -1449,7 +1481,7 @@ spec:RegisterHook( "reset_precast", function ()
     else active_moon = nil end
 
     -- UGLY
-    if talent.incarnation_chosen_of_elune.enabled then
+    if talent.incarnation.enabled then
         rawset( cooldown, "ca_inc", cooldown.incarnation )
         rawset( buff, "ca_inc", buff.incarnation )
     else
@@ -1647,9 +1679,9 @@ spec:RegisterAbilities( {
 
     -- Talent: Celestial bodies align, maintaining both Eclipses and granting $s1% haste for $d.
     celestial_alignment = {
-        id = 194223,
+        id = function() return talent.orbital_strike.enabled and 383410 or 194223 end,
         cast = 0,
-        cooldown = function () return ( essence.vision_of_perfection.enabled and 0.85 or 1 ) * 180 end,
+        cooldown = function () return ( essence.vision_of_perfection.enabled and 0.85 or 1 ) * 180 - 60 * talent.orbital_strike.rank end,
         gcd = "off",
         school = "astral",
 
@@ -1941,9 +1973,9 @@ spec:RegisterAbilities( {
 
 
     incarnation = {
-        id = 102560,
+        id = function() return talent.orbital_strike.enabled and 390414 or 102560 end,
         cast = 0,
-        cooldown = function () return ( essence.vision_of_perfection.enabled and 0.85 or 1 ) * 180 end,
+        cooldown = function () return ( essence.vision_of_perfection.enabled and 0.85 or 1 ) * 180 - 60 * talent.orbital_strike.rank end,
         gcd = "off",
 
         spend = -40,
@@ -1968,7 +2000,7 @@ spec:RegisterAbilities( {
             if pvptalent.moon_and_stars.enabled then applyBuff( "moon_and_stars" ) end
         end,
 
-        copy = { "incarnation_chosen_of_elune", "Incarnation" },
+        copy = { "incarnation_chosen_of_elune", "Incarnation", 102560, 390414 },
     },
 
     -- Talent: Infuse a friendly healer with energy, allowing them to cast spells without spending mana for $d.$?s326228[    If cast on somebody else, you gain the effect at $326228s1% effectiveness.][]
@@ -2942,7 +2974,7 @@ spec:RegisterOptions( {
 } )
 
 
-spec:RegisterSetting( "starlord_cancel", false, {
+--[[ spec:RegisterSetting( "starlord_cancel", false, {
     name = "Cancel |T462651:0|t Starlord",
     desc = "If checked, the addon will recommend canceling your Starlord buff before starting to build stacks with Starsurge again.\n\n" ..
         "You will likely want a |cFFFFD100/cancelaura Starlord|r macro to manage this during combat.",
@@ -2950,7 +2982,7 @@ spec:RegisterSetting( "starlord_cancel", false, {
     iconCoords = { 0.1, 0.9, 0.1, 0.9 },
     type = "toggle",
     width = "full"
-} )
+} ) ]]
 
 spec:RegisterSetting( "delay_berserking", false, {
     name = "Delay |T135727:0|t Berserking",
@@ -2960,11 +2992,11 @@ spec:RegisterSetting( "delay_berserking", false, {
 } )
 
 
--- Starlord Cancel Override
+--[[ Starlord Cancel Override
 class.specs[0].abilities.cancel_buff.funcs.usable = setfenv( function ()
     if not settings.starlord_cancel and args.buff_name == "starlord" then return false, "starlord cancel option disabled" end
     return args.buff_name ~= nil, "no buff name detected"
-end, state )
+end, state ) ]]
 
 
 spec:RegisterPack( "Balance", 20230208, [[Hekili:TZX2UTno2VLGfJRTtJJKSDs6aBVaZG9HzWI5LmpBzfz6yHil5vxAAam83(EiPefj1H6sU0wGDXmOjvK8CJN7KSRTx)3RVFRxgz9F5y5m1YX6UjwFXAULZ67ZE5iz99h98FY7r4xI8oa)5V5f6f5Z((lHXEBPRpnopH(P9zzht)1RV(b(CUkn4G)KhdY2N)WKG4Rlw6v3hC43V(W2j7Zoe(p3feswwSGjzFlB99pKheM9hrRFaNWSxFVxE2(4K13tbeG1GTBj8Pts9xF)67ddsZszmgzNxEyg8R)fJrjrEpes2U(34Znj4ywqC067)xFJ4NNr2EEd5RKKxoVjl4ab(Z9WF45NfNCEtqk8RF1liKcHjan4ZxAACOxI7deVdRZasLILQHIbiiJvygt1OdGiYijbEG4MHZfN38O)2jh8(25ndoVziqs(Hbhtjt8IEXnI8TSZBoDQ6RH5ra(5FFufUFoXlBpvserC93U((5uCpZiUti7siP7PJWqRGwCoVzSkf9q(UDtkWUld7tYpkX0zKqQezh8heDcyUgbedlmLKvT6V6bKdmk93cZHFKEeaNBMxYJKS0jPWVSZlm88MvN3yZMUlxTmi11lMqXXn9gh3CEZ1N3WX0EpGboV5sqe4fsIYMe5LLdIg3sv0cilpL4KhcYCFiH49ejPAcGCBBC2KdXXr7csaL7a)NcIEKnWWc5O6sb2Z)jgVbJ7C75nxvUbWMmOQLcaHaYByVM9)WqZSKLdh9std(kX1l9ivyCRXDCge99CdI8NKqo4febk4Rwci0IRGvkMMefdBGUCELp0dXPPmDHDbpUpZvSCqFXEELG(bsskjHYZus5oJKYfGGkjpylhtPL69Fqu4ulfdLJXSFce4x0iWYzKLee9ejZwMKfOooYnhSdkMZ5nxa0NndZaxv81jzoad4T9fx)44WTXphXjYHsSGoC4GrHlrMYuMsWavzfv741lEQjCrqlOXLggdUyRKnG8Z2QzbOtNfGo1eG2OcWMOrNFgKlom5ITCqb6AaHWHuT4c2ogTpeOSWjNawj5rU8F3LgYJh4RWrqH3qB94nDzTWFL(F3FmH4hF4bVQaOLRM6udmSD3fNCqJrucbEWl5j34DUqCq3Ndc32sWW29vFHWRRpjKaUd9cD9cdEm6a9BcFVfQp8zcB(EjGFCkV6VpoLerjjce7sYDoDVv2lKStvzffS4OTt2fus(HhsacoikJeLgK9YKeVON4QRY4JNtrzmw2UXRi0PsCbvTvtXj92UTjMOYAectYGh1(INWq1yL2Ot2MN4jaLr6qpev70XqfpRMjfN6KszqtNMPjZXQEB5JXSQOwMijKkBArZxqlcPW1KEQAuPbl9Oj0K2CZID3gqyPoiCFnILtXnSPd53qvbpg)mKWbKFCGFqgByHxgPuiyz5mfOKx8djLzHrj9s7Ce6pnVg5)wi5Rytxjnqw6AoLH(E3yitEkX2q(PB3O)UKmK1LWKrpZlig48shR6HvnZ4080TAp46CgVrN54(52EeZkRYwg8t7hhTnGTQIyG6UorISQVmgDcYp3hIJYtbwIK48f3zh9zdO7bOUzEnVRgkp6nzJCLMDbV8iqtTuh7oMu10CEvQF3XLmga5cgDBBZOTMJ5vnHcIi9aO4bKbFyUTTX9hCJaZv708g9q1s5Oedem4jIs(e4YQfnlRgxZ1fZsGA(KfN7VNLyKFmW7PLv1rNGrCnSz0rTHCukWuTqDzBUzs0IivdAIh6ZAKsGSYsWBomzdBCLacj)nSQW6fmLCzuvrIW20ljjior4erpbC9aYvygpIpAJqQQ6WSKNtqty(kMq4TEYLALJ4hPHYc6VXlTggU6EvYX7YJEeGYJjXptPg50HRM0ZErqv8Uzqk8uF3AznhRdffx78CYWdnCBzafOsJV6s7YK9eAzcUhYt3NehFqnhk5rqlU5TiCURjc1PIk2LN8sLoeLkm3wT(tfZeBrnPebqqwVPDl5AlyKmdb(NOj5WygZblniAMPqWu3dpt8(kjj1fm4okQ6UqtIoEyCYwfxRIvYgPOlyl4T3a3ZJTE8vLm0zW7rWcc(cO2sxyAwbo8FQSZjczwrekc9hvDx7vfECyPx)HS(3aFXAYSQo4P7cs0jpnUKMTjLlBP9DkcBYUSs)pneEEQkMsZH5WqLUV8)Fcl9mHf8usSnhpR)8YCRQ9LIv7hF4qEur8oh9oWHJmEU8wMemS(RZT(Q6XntDn19rOGb12G3jNvDixd(SKmeGq8Fn(jcldP0JbaNKY4rZHP7Va1wsGgrEw4f05JjQ73nx679c3vXmVNrjDKKy7It8juFz8ZiHHlZXcFTESaNG4USCmhQslNB(HfH5H15gLme5hAMsAHo6(GlNCtnqLAdLTpjN3WhXFdPRpDOlVYX9upFrH0qLKn1idKoZOCavYQwIFN2SmhwhxGqeMB9q9MLitszSEk3qtV6qtJQNuzhI4u0RfCc3uhSWA4Zhp1yCxRRbG7VX8DVvwPjncjw5dPzu2VYUrn)hv3OW7JFB13MMXDq21ErX5onMQOlCMfmleNyMrTOYdaZ0YNxLk)XKGdqM8SA7t8HAh9DpMhMcrVyB3NzNI785wODiVwRZ6OeYCtvers7gDDJLArjAXRmenQLu17gQlskRMonEWG(2(LujlW3PUVidY31MV0UlJ(2uM27ighvi9Lr0xoK8Xma96DsRjOl7Za2jiId)BDZTasSPOSigbjgQ2HjIxQP5KeXrcIHBTgH0(MOSAosbdnfcyf)QC0Wj6pQl779S6ejF7f1Nimgw3C7tk2)rkRzYtrSR0WazUfzASRaH6MBDIWq59DXPQzyzOwSg6pr)tgzU0nhcR42ADO4TGSwkJ5DTQ9xDJfBOCEZ9Atk8bsWqdvvyUQKxzB7K64h4DilSq1HQswhe8zSTyy5EORoIS30IBKOb19A1V3J6m6)gSPdiVphO8hhvO7u(7rDfgiLgCo2BCyS1nM901FK8dV1nVNoy)rF0coMDGBU3qnEAOgzvS2WpxUAU048WY7Lg4)hsfw5E7AipVrIebv7eSioLIVnrS8AZs2r20wlhDUjNCMdsziydiny7ije)90zuSHDf7G4g1kHiBYv7S4MAoyvzM6brCLTk)7AN8cKGJFR5XZgb5GuWZRDQY1weRbFtnfROZn4dgIQ0sxe)TkydyLwXd9qttxF)FtFgbbhogNam3o6Jj4tfpmHpr7OY)jhOvqLjnMUz4LNfFWJ9weGnPOhjPto)N)7GiyOB(1ZB(DitmscB4pHFd1byMfBC0snuywdT)2O2GTY9txdYOx79wGB8rc)I4bAubqkVF6MFr6E3FzZ08LnH4Xy31(XdzAli3Y(vdDU9kNXChpv3R(rJgpZQKpV56FcPnHK9l67yfx7r97AUyxZ0LrxFlZ2YaK1Ve21GmYekG85)eXiqC9I7NzWuCvvKoAOPW2Wngwxgyahn0eqnC1H2f2QjOqSlFfxre6Ad3rGw7UXIazS58HcEbGV1O2DJcJAdRqTMbA7ul(C(qbVj7gVys)SyCAXjSug)dgwp3HRkscy0QBUAOYrR9loJgGLD2kSmZUCAjx)QX319eFcjWSFa2Z1uhWUIHyXu90V)H18q7GdALBHLgKrVNxDfWA3)lnqB42Hvd4ZXbEzhe0GQElh0bNtTWuO3ubnOA4Em0sKQY096Nz30wm7Wo81vf)CSJZVyFxjX3YmVgMPjspTNrx)ryP4y)(QzyaC6DIsdSMAuvnWFNbQTwnL60TXIo7kk0RKudbMkhvw7(pyAhuGoV8mjoVH9GPHHPp5Ry6lYUSkO0jIK0UC51YV6RZ)j6m0EVx4ZQ0B9NPftTuUP9FMDUalVWCgBdUOD9StNuom5oqd6hssbDuGk0Be2sNUay13wubyTEfRm(4sVTBlPl0udh0q2xVvmoepbSbnKJZOXgKqSQW)CWULd1pdVtNk)s1ZOAevR9FCEtVFJ(cKdOS6v6R(v6d0x(lcsJc8ffnzEq3OZpx8w3xoxbhYTzLcz5KFyyXzCjEqB6boyv354xzOITk8R03kBZlxkPPcy0LYYrl59DSuxz6T6PKtfHiNA4QLowNoHEqGNor7P1aL(zTWwrAYFe4uqFHSNJbdFhW0uRrYOs8(F)m7PcxAkBtrUaOQwIxS0g86zO8(tNgAyzlTLitTHMoAGmRLFSpCKc)RbyRoWRonYRov8QE)emJwNVRSJ8h16si3GIAmkZJC7ZwxwAg1xxPltyffXCP2sFw5evwY0xUGXnDVAQ(u7KoDuCYzyKr3jG3w5J9r08DuYO6lv)XjvMrJQFfd3QHfZhCHQImgDVY2cxrE(L2wJBp9OrJ0zbrypbhRZgdWUaAdQDhC0vAuc(96vDUc)(bpA1DxIpsp2pVBaoiwm02(QMsa8k1SULFoaJgyuqwxeXJp3S0Fygw)bq5Yf4C5yfUe0FmCdbgD6ekuhId2lTDkIUJEEIlMvGj0dpCXS6QIiP83OOrF9s699AD6NOKrtK65cIM2gwYCLSnhYyxfmDKkFkBuK3D1AhRbdVaR3pNoDbEFBGQMm9s(w4maXn0TdUW072R22QYLBPFCYDy42PockoQ5(b8zwdAq9DL8MttAYktSgZlBJJWlZkibK7ZZPtA98yGyMvx6MftXXyaVGdoWn(C4woTGXQ9m46tW5H3nEO9LwtMn205Zw3uxCA2IC6rUcaM8oxpbL)xnwJUGqVlq9ZGyUvnpY1V8F6GCXClmodu5xm9s8oV2OzxJrnwnRglxEbG6hRAxJvfx(M(biNVhor0UMI9LcFxn(SVTjhoklsQVdYrs1)iA9qLTDxUQOYVTenXjTcTeZwMHXh1C5nT3MEuiwUezIpnR7vsvf6T5sx0GEtff9oa(E5LT76N31v65on6PHIVeDXTJ1Ez3XIVM)Uv8vAw71ELM1TsVoDsHEGAeXO(flDW3vOnbbB6Z5jC0YZxz1Y5ZT0zmfpmgzot1Hu4OSDeFJ1atUVqiOspgDe4qCnnDcny2RYvsZ0wDNkwP2QmxQcIjbr(rBuyq01syAQWookrQHzeAiUAqtTqqZqdBpSioJqCPWJvLERFOoTA4PaNMD0O)wjkKSY6ksjZyYNZQPMAL8O3P8JQBjwiQn(oug0(BqrQ7g6YbDZd8Ch786FJ5YoxdCVB5qXH2hxnT4(RqkqSW9e27ESbDGovuPO2t9dgNpD9xTb2xlnVl)3p6xvIqDxQo9vMl0RhdFuPdPHM3E9nmW8Zz5nf2s)m2(M6woMs1WqxtBSxjZhB8IHmgne6OrcBsDhJdA91gqnOrYBv3fzTwoI4OAy9xrWv3oc)Cw11bLdGxMhs5ddG7cb7rb0ytwX(xvjKq9AFRXkoz)tiIp9rm7WUG)R)Vp]] )
