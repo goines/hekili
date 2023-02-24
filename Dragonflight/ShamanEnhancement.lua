@@ -712,6 +712,10 @@ spec:RegisterCombatLogEvent( function( _, subtype, _,  sourceGUID, sourceName, _
                 vesper_damage = 3
                 vesper_used = 0
 
+        -- For any Maelstrom Weapon changes, force an immediate update for responsiveness.
+        elseif spellID == 344179 then
+            Hekili:ForceUpdate( subtype, true )
+
         -- Vesper Totem heal
         elseif spellID == 324522 then
             local now = GetTime()
@@ -1733,7 +1737,7 @@ spec:RegisterAbilities( {
     lava_lash = {
         id = 60103,
         cast = 0,
-        cooldown = function () return 18 * ( buff.hot_hand.up and ( 1 - 0.375 * talent.hot_hand.rank ) or 1 ) * haste end,
+        cooldown = function () return ( 18 - 3 * talent.molten_assault.rank ) * ( buff.hot_hand.up and ( 1 - 0.375 * talent.hot_hand.rank ) or 1 ) * haste end,
         gcd = "spell",
         school = "fire",
 

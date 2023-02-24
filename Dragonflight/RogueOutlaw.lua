@@ -606,20 +606,31 @@ spec:RegisterStateExpr( "rtb_buffs_longer", function ()
     local n = 0
     for _, rtb in ipairs( rtb_buff_list ) do
         local bone = buff[ rtb ]
-        if bone.up and bone.duration > 30 and rtbAuraAppliedBy[ rtb ] ~= "roll_the_bones" then n = n + 1 end
+        if bone.up and bone.duration > 30 and rtbAuraAppliedBy[ rtb ] == "keep_it_rolling" then n = n + 1 end
     end
     return n
 end )
 
 spec:RegisterStateExpr( "rtb_buffs_will_lose", function ()
-    return rtb_buffs_normal
+    if rtb_buffs_normal > 0 then return rtb_buffs_normal + rtb_buffs_shorter end
+    return 0
 end )
 
 spec:RegisterStateTable( "rtb_buffs_will_lose_buff", setmetatable( {}, {
     __index = function( t, k )
-        local bone = buff[ k ]
-        -- This is not perfect; a Keep It Rolling buff can be in this range and may not reroll.
-        return bone.up and rtbAuraAppliedBy[ k ] == "roll_the_bones"
+        if not buff[ k ].up then return false end
+
+        local appliedBy = rtbAuraAppliedBy[ k ]
+        if appliedBy == "roll_the_bones" then return true end
+        if appliedBy == "keep_it_rolling" then return false end
+
+        return rtb_buffs_normal > 0
+    end
+} ) )
+
+spec:RegisterStateTable( "rtb_buffs_will_retain_buff", setmetatable( {}, {
+    __index = function( t, k )
+        return not rtb_buffs_will_lose_buff[ k ]
     end
 } ) )
 
