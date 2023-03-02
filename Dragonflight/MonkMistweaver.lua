@@ -272,18 +272,18 @@ spec:RegisterAuras( {
         duration = 6,
         max_stack = 1
     },
-    invoke_chiji_the_red_crane = { -- TODO: Is a totem.
+    invoke_chiji_the_red_crane = { -- This is not the presence of the totem, but the buff stacks gained while totem is up.
         id = 343820,
-        duration = 25,
-        max_stack = 1,
-        copy = { "invoke_chiji", 325197 }
+        duration = 20,
+        max_stack = 3,
+        copy = { "invoke_chiji", "chiji_the_red_crane", "chiji" }
     },
-    invoke_yulon_the_jade_serpent = { -- TODO: Is a totem.
+    invoke_yulon_the_jade_serpent = { -- Misleading; use pet.yulon.up or totem.yulon.up instead.
         id = 322118,
         duration = 25,
         tick_time = 1,
         max_stack = 1,
-        copy = "invoke_yulon"
+        copy = { "invoke_yulon", "yulon_the_jade_serpent", "yulon" }
     },
     invokers_delight = {
         id = 388663,
@@ -369,6 +369,11 @@ spec:RegisterAuras( {
         id = 198909,
         duration = 20,
         max_stack = 1
+    },
+    soothing_breath = { -- Applied by Yu'lon while active.
+        id = 343737,
+        duration = 25,
+        max_stack = 1,
     },
     soothing_mist = {
         id = 115175,
@@ -456,6 +461,23 @@ spec:RegisterAuras( {
 } )
 
 
+spec:RegisterTotem( "chiji", 877514 )
+spec:RegisterTotem( "yulon", 574571 )
+
+spec:RegisterStateTable( "gust_of_mist", setmetatable( {}, {
+    __index = function( t,  k)
+        if k == "count" then
+            t[ k ] = GetSpellCount( action.sheiluns_gift.id )
+            return t[ k ]
+        end
+    end
+} ) )
+
+spec:RegisterHook( "reset_precast", function()
+    gust_of_mist.count = nil
+end )
+
+
 -- Abilities
 spec:RegisterAbilities( {
     -- Strike with a blast of Chi energy, dealing 1,429 Physical damage and granting Shuffle for 3 sec.
@@ -471,22 +493,34 @@ spec:RegisterAbilities( {
 
         handler = function ()
             removeBuff( "teachings_of_the_monastery" )
+            if pet.chiji.up then
+                addStack( "invoke_chiji" )
+                gust_of_mist.count = min( 10, gust_of_mist.count + 1 )
+            end
         end,
     },
 
     enveloping_mist = {
         id = 124682,
-        cast = 2,
+        cast = function()
+            if buff.invoke_chiji.stack == 3 then return 0 end
+            return 2 * ( 1 - 0.333 * buff.invoke_chiji.stack ) * haste
+        end,
         cooldown = 0,
         gcd = "spell",
 
-        spend = 0.24,
+        spend = function()
+            return pet.yulon.up and 0.12 or 0.24
+        end,
         spendType = "mana",
 
         startsCombat = false,
         texture = 775461,
 
         handler = function ()
+            removeBuff( "invoke_chiji" )
+            gust_of_mist.count = 0
+
             applyBuff( "enveloping_mist" )
             if talent.secret_infusion.enabled and buff.thunder_focus_tea.stack == buff.thunder_focus_tea.max_stack then applyBuff( "secret_infusion_versatility" ) end
         end,
@@ -542,6 +576,7 @@ spec:RegisterAbilities( {
         toggle = "cooldowns",
 
         handler = function ()
+            summonTotem( "chiji", 25 )
         end,
 
         copy = "invoke_chiji"
@@ -562,6 +597,7 @@ spec:RegisterAbilities( {
         toggle = "cooldowns",
 
         handler = function ()
+            summonTotem( "yulon", 25 )
         end,
 
         copy = "invoke_yulon"
@@ -743,6 +779,10 @@ spec:RegisterAbilities( {
                     else active_dot.renewing_mist = max( group_members, active_dot.renewing_mist + 1 ) end
                 end
                 if talent.secret_infusion.enabled and buff.thunder_focus_tea.stack == buff.thunder_focus_tea.max_stack then applyBuff( "secret_infusion_versatility" ) end
+                if pet.chiji.up then
+                    addStack( "invoke_chiji" )
+                    gust_of_mist.count = min( 10, gust_of_mist.count + 1 )
+                end
                 removeStack( "thunder_focus_tea" )
             end
         end,
@@ -762,7 +802,12 @@ spec:RegisterAbilities( {
         startsCombat = false,
         texture = 1242282,
 
+        usable = function()
+            return gust_of_mist.count > 0, "requires mists"
+        end,
+
         handler = function ()
+            gust_of_mist.count = 0
         end,
     },
 
@@ -812,6 +857,10 @@ spec:RegisterAbilities( {
 
         handler = function ()
             applyBuff( "spinning_crane_kick" )
+            if pet.chiji.up then
+                addStack( "invoke_chiji" )
+                gust_of_mist.count = min( 10, gust_of_mist.count + 1 )
+            end
         end,
     },
 
