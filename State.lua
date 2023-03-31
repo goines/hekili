@@ -1978,7 +1978,7 @@ do
                 local c, fs = t.combat, t.false_start
                 if c == 0 and fs == 0 then return 0 end
                 return t.query_time - max( c, fs )
-            elseif k:sub(1, 12) == "time_to_pct_" then
+            elseif type(k) == "string" and k:sub(1, 12) == "time_to_pct_" then
                 local percent = tonumber( k:sub( 13 ) ) or 0
                 return Hekili:GetGreatestTimeToPct( percent ) - ( t.offset + t.delay )
 
@@ -2193,11 +2193,23 @@ do
             if k == "action_cooldown" then return ability and ability.cooldown or 0
             elseif k == "cast_delay" then return 0
             elseif k == "cast_regen" then
-                local regen = t[ ability and ability.spendType or class.primaryResource ].regen
-                if regen == 0.001 then regen = 0 end
-                if not ability then
-                    return t.gcd.execute * regen
+                local resType = class.primaryResource
+                local amount, resource
+
+                if ability then
+                    amount, resource = ability.spend
+
+                    if not resource and ability.spendType then
+                        resource = ability.spendType
+                    end
                 end
+
+                resType = resource or resType
+
+                local regen = t[ resType ].regen
+                if regen == 0.001 then regen = 0 end
+
+                if not amount then return t.gcd.execute * regen end
                 return ( max( t.gcd.execute, ability.cast or 0 ) * regen ) - ( ability.spend or 0 )
 
             elseif k == "cast_time" then return ability and ability.cast or 0
@@ -2281,7 +2293,7 @@ do
                     -- return 0
                 elseif k == "tick_time" then return aura.tick_time or ( 3 * state.haste )
                 elseif k == "tick_time_remains" then return 0
-                elseif k == "ticks" then return ( aura.duration or 15 ) / ( aura.tick_time or 3 * haste )
+                elseif k == "ticks" then return ( aura.duration or 15 ) / ( aura.tick_time or ( 3 * haste ) )
                 elseif k == "ticks_remain" then return 0
                 elseif k == "time_to_refresh" then return 0 end
             end
@@ -3756,7 +3768,6 @@ do
                 return t.remains == 0
 
             elseif k == "remains" then
-                if state.IsCycling() and state.active_dot[ t.key ] < state.cycle_enemies then return 0 end
                 -- if state.IsCycling( t.key ) then return 0 end
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0
 
