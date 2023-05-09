@@ -11,16 +11,29 @@ function HekiliPopupDropdownMixin:OnLoad()
             self.Text:SetText( strformat( "%d", value ) )
         end
     end
-
-    self.Slider:RegisterPropertyChangeHandler( "OnValueChanged", UpdateText );
+    self.Slider:RegisterPropertyChangeHandler( "OnValueChanged", UpdateText )
 end
 
 function HekiliPopupDropdownMixin:OnShow()
     -- self.Toggle:RegisterEvents();
     if ElvUI then
-        local S = ElvUI[1]:GetModule( "Skins" )
+        local E = ElvUI[1]
+        local S = E:GetModule( "Skins" )
         S:HandleSliderFrame( self.Slider )
+
+        local r, g, b = unpack( E.media.rgbvaluecolor )
+
+        local name = self:GetName()
+        local highlight = _G[ name .. "Highlight" ]
+
+        highlight:SetTexture( E.Media.Textures.Highlight )
+        highlight:SetBlendMode( 'BLEND' )
+        highlight:SetDrawLayer( 'BACKGROUND' )
+        highlight:SetVertexColor( r, g, b )
     end
+
+    self.Slider.backdrop:SetFrameLevel( self:GetFrameLevel() + 1 )
+    self.Slider:SetFrameLevel( self:GetFrameLevel() + 2 )
 end
 
 function HekiliPopupDropdownMixin:OnHide()
@@ -29,7 +42,7 @@ end
 
 function HekiliPopupDropdownMixin:OnSetOwningButton()
     -- self.Toggle:UpdateVisibleState();
-    self.Slider:UpdateVisibleState();
+    self.Slider:UpdateVisibleState()
 end
 
 
