@@ -265,7 +265,6 @@ do
 
         if spellCallbacks == nil or next( spellCallbacks ) == nil then
             UnregisterEvent( "SPELL_DATA_LOAD_RESULT", HandleSpellData )
-            -- print( "Unregistered HandleSpellData" )
             isUnregistered = true
         end
     end
@@ -305,6 +304,7 @@ end
 RegisterEvent( "DISPLAY_SIZE_CHANGED", function()
     Hekili:BuildUI()
 end )
+
 
 
 RegisterEvent( "PLAYER_ENTERING_WORLD", function( event, login, reload )
@@ -1384,57 +1384,90 @@ local autoAuraKey = setmetatable( {}, {
 
 
 do
-    local ScrapeUnitAuras = Hekili.ScrapeUnitAuras
-    local StoreMatchingAuras = Hekili.StoreMatchingAuras
+    local playerInstances = {}
+    local targetInstances = {}
 
-    RegisterUnitEvent( "UNIT_AURA", "player", "target", function( event, unit, full, data )
-        if full then
-            ScrapeUnitAuras( unit, false, event )
-            -- Hekili:ForceUpdate( event )
-            return
-        end
+    local instanceDB
 
-        -- Already planning to update at next reset.
-        if state[ unit ].updated then return end
+    local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+    local ForEachAura = AuraUtil.ForEachAura
 
-        if unit == "player" then
-            state.player.updated = true
+    local function StoreInstanceInfo( aura )
+        local id = aura.spellId
+        local model = class.auras[ id ]
+        instanceDB[ aura.auraInstanceID ] = aura.isBossAura or aura.canApplyAura or aura.isFromPlayerOrPlayerPet or ( model and model.shared )
+    end
+
+    RegisterUnitEvent( "UNIT_AURA", "player", "target", function( event, unit, data )
+        local isPlayer = ( unit == "player" )
+        instanceDB = isPlayer and playerInstances or targetInstances
+
+        local forceUpdateNeeded = false
+
+        if data.isFullUpdate then
+            wipe( instanceDB )
+            state[ unit ].updated = true
+
+            ForEachAura( unit, "HELPFUL", nil, StoreInstanceInfo, true )
+            ForEachAura( unit, "HARMFUL", nil, StoreInstanceInfo, true )
+
             Hekili:ForceUpdate( event )
             return
         end
 
-        -- local harmful, helpful
+        if data.addedAuras and #data.addedAuras > 0 then
+            for _, aura in ipairs( data.addedAuras ) do
+                local id = aura.spellId
+                local model = class.auras[ id ]
 
-        for _, info in ipairs( data ) do
-            if info.isFromPlayerOrPlayerPet then
-                local id = info.spellId
-                local aura = class.auras[ id ]
+                local ofConcern = not aura or ( aura.isBossAura or aura.canApplyAura or aura.isFromPlayerOrPlayerPet ) or ( model and model.shared )
+                instanceDB[ aura.auraInstanceID ] = ofConcern
 
-                if aura then
+                if ofConcern then
                     state[ unit ].updated = true
-                    Hekili:ForceUpdate( event )
-                    return
-
-                    --[[
-                    if info.isHelpful then
-                        helpful = helpful or { count = 0 }
-                        helpful[ id ] = aura.key
-                        helpful.count = helpful.count + 1
-                    else
-                        harmful = harmful or { count = 0 }
-                        harmful[ id ] = aura.key
-                        harmful.count = harmful.count + 1
-                    end ]]
+                    forceUpdateNeeded = true
                 end
             end
         end
 
-        --[[
-        if helpful then StoreMatchingAuras( unit, helpful, "HELPFUL", select( 2, UnitAuraSlots( unit, "HELPFUL" ) ) ) end
-        if harmful then StoreMatchingAuras( unit, harmful, "HARMFUL", select( 2, UnitAuraSlots( unit, "HARMFUL" ) ) ) end ]]
+        if data.updatedAuraInstanceIDs and #data.updatedAuraInstanceIDs > 0 then
+            for _, instance in ipairs( data.updatedAuraInstanceIDs ) do
+                local aura = GetAuraDataByAuraInstanceID( unit, instance )
+
+                local id = aura and aura.spellId
+                local model = class.auras[ id ]
+
+                local ofConcern = not aura or ( aura.isBossAura or aura.canApplyAura or aura.isFromPlayerOrPlayerPet ) or ( model and model.shared )
+                instanceDB[ instance ] = ofConcern
+
+                if ofConcern then
+                    forceUpdateNeeded = true
+                end
+            end
+        end
+
+        if data.removedAuraInstanceIDs and #data.removedAuraInstanceIDs > 0 then
+            for _, instance in ipairs( data.removedAuraInstanceIDs ) do
+                if instanceDB[ instance ] then forceUpdateNeeded = true end
+                instanceDB[ instance ] = nil
+            end
+        end
+
+        if forceUpdateNeeded then
+            state[ unit ].updated = true
+            Hekili:ForceUpdate( event )
+        end
     end )
 
     RegisterEvent( "PLAYER_TARGET_CHANGED", function( event )
+        instanceDB = targetInstances
+        wipe( instanceDB )
+
+        if UnitExists( "target" ) then
+            ForEachAura( "target", "HELPFUL", nil, StoreInstanceInfo, true )
+            ForEachAura( "target", "HARMFUL", nil, StoreInstanceInfo, true )
+        end
+
         state.target.updated = true
         Hekili:ForceUpdate( event, true )
     end )
