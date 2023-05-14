@@ -1406,11 +1406,11 @@ do
 
         if data.isFullUpdate then
             wipe( instanceDB )
-            state[ unit ].updated = true
 
             ForEachAura( unit, "HELPFUL", nil, StoreInstanceInfo, true )
             ForEachAura( unit, "HARMFUL", nil, StoreInstanceInfo, true )
 
+            state[ unit ].updated = true
             Hekili:ForceUpdate( event )
             return
         end
@@ -1424,7 +1424,6 @@ do
                 instanceDB[ aura.auraInstanceID ] = ofConcern
 
                 if ofConcern then
-                    state[ unit ].updated = true
                     forceUpdateNeeded = true
                 end
             end
@@ -1615,6 +1614,8 @@ local function CLEU_HANDLER( event, timestamp, subtype, hideCaster, sourceGUID, 
     local amSource  = ( sourceGUID == state.GUID )
     local petSource = ( UnitExists( "pet" ) and sourceGUID == UnitGUID( "pet" ) )
     local amTarget  = ( destGUID   == state.GUID )
+
+    if not InCombatLockdown() and not ( amSource or petSource or amTarget ) then return end
 
     if subtype == 'SPELL_SUMMON' and amSource then
         -- Guardian of Azeroth check.
