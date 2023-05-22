@@ -2687,6 +2687,7 @@ local mt_toggle = {
 
         if k == "cooldowns" and toggle.override and state.buff.bloodlust.up then return true end
         if k == "essences" and toggle.override and state.toggle.cooldowns then return true end
+        if k == "potions" and toggle.override and state.toggle.cooldowns then return true end
 
         if toggle then return toggle.value end
     end
@@ -3982,6 +3983,7 @@ do
             local aura = class.auras[ k ]
 
             if aura then
+                aura.used = true
                 if aura.meta then rawset( v, "metastack", {} ) end
                 if aura.alias then
                     rawset( t, k, setmetatable( v, mt_alias_buff ) )
@@ -4980,6 +4982,7 @@ do
             local aura = class.auras[ k ]
 
             if aura then
+                aura.used = true
                 if aura.meta then rawset( v, "metastack", {} ) end
                 if aura.alias then
                     rawset( t, k, setmetatable( v, mt_alias_debuff ) )
@@ -5149,7 +5152,7 @@ local mt_default_action = {
             return state.combat > 0 and max( 0, ability.lastCast - state.combat ) or 0
 
         elseif k == "time_since" then
-            return max( 0, state.query_time - ability.lastCast )
+            return min( 3600, max( 0, state.query_time - ability.lastCast ) )
 
         elseif k == "in_range" then
             if UnitExists( "target" ) and UnitCanAttack( "player", "target" ) and LSR.IsSpellInRange( ability.rangeSpell or ability.id, "target" ) == 0 then
@@ -6875,7 +6878,7 @@ function state:IsKnown( sID )
 
     if not ability then
         Error( "IsKnown() - " .. sID .. " / " .. original .. " not found in abilities table.\n\n" .. debugstack() )
-        return false
+        return false, format( "%s / %s not found in abilities table", tostring( original ), tostring( sID ) )
     end
 
     if IsAbilityDisabled( ability ) then return false, "not usable here" end
@@ -6896,8 +6899,6 @@ function state:IsKnown( sID )
     end
 
     if IsDisabledCovenantSpell( sID ) then return false, "covenant spells are disabled" end
-
-    local profile = Hekili.DB.profile
 
     if ability.spec and not state.spec[ ability.spec ] then
         return false, "wrong specialization"
@@ -7237,7 +7238,7 @@ function state:TimeToReady( action, pool )
 
     if z < -99 or z > 0 then
         -- if not ability.dual_cast and ( ability.gcd ~= "off" or ( ability.item and not ability.essence ) or not ability.interrupt ) then
-        if not self.args.use_off_gcd and ( ability.gcd ~= "off" or ( ability.item and not ability.essence ) ) then
+        if not self.args.use_off_gcd then -- and ( ability.gcd ~= "off" or ( ability.item and not ability.essence ) ) then
             wait = max( wait, self.cooldown.global_cooldown.remains )
         end
 
@@ -7453,4 +7454,4 @@ for k, v in pairs( state ) do
     ns.commitKey( k )
 end
 
-ns.attr = { "serenity", "active", "active_enemies", "my_enemies", "active_flame_shock", "adds", "agility", "air", "armor", "attack_power", "bonus_armor", "cast_delay", "cast_time", "casting", "cooldown_react", "cooldown_remains", "cooldown_up", "crit_rating", "deficit", "distance", "down", "duration", "earth", "enabled", "energy", "execute_time", "fire", "five", "focus", "four", "gcd", "hardcasts", "haste", "haste_rating", "health", "health_max", "health_pct", "intellect", "level", "mana", "mastery_rating", "mastery_value", "max_nonproc", "max_stack", "maximum_energy", "maximum_focus", "maximum_health", "maximum_mana", "maximum_rage", "maximum_runic", "melee_haste", "miss_react", "moving", "mp5", "multistrike_pct", "multistrike_rating", "one", "pct", "rage", "react", "regen", "remains", "resilience_rating", "runic", "seal", "spell_haste", "spell_power", "spirit", "stack", "stack_pct", "stacks", "stamina", "strength", "this_action", "three", "tick_damage", "tick_dmg", "tick_time", "ticking", "ticks", "ticks_remain", "time", "time_to_die", "time_to_max", "travel_time", "two", "up", "water", "weapon_dps", "weapon_offhand_dps", "weapon_offhand_speed", "weapon_speed", "single", "aoe", "cleave", "percent", "last_judgment_target", "unit", "ready", "refreshable", "pvptalent", "conduit", "legendary", "runeforge", "covenant", "soulbind", "enabled", "full_recharge_time", "time_to_max_charges", "remains_guess", "execute", "actual", "current", "cast_regen", "boss", "exists", "disabled", "fight_remains" }
+ns.attr = { "serenity", "active", "active_enemies", "my_enemies", "active_flame_shock", "adds", "agility", "air", "armor", "attack_power", "bonus_armor", "cast_delay", "cast_time", "casting", "cooldown_react", "cooldown_remains", "cooldown_up", "crit_rating", "deficit", "distance", "down", "duration", "earth", "enabled", "energy", "execute_time", "fire", "five", "focus", "four", "gcd", "hardcasts", "haste", "haste_rating", "health", "health_max", "health_pct", "intellect", "level", "mana", "mastery_rating", "mastery_value", "max_nonproc", "max_stack", "maximum_energy", "maximum_focus", "maximum_health", "maximum_mana", "maximum_rage", "maximum_runic", "melee_haste", "miss_react", "moving", "mp5", "multistrike_pct", "multistrike_rating", "one", "pct", "rage", "react", "regen", "remains", "resilience_rating", "runic", "seal", "spell_haste", "spell_power", "spirit", "stack", "stack_pct", "stacks", "stamina", "strength", "this_action", "three", "tick_damage", "tick_dmg", "tick_time", "ticking", "ticks", "ticks_remain", "time", "time_to_die", "time_to_max", "travel_time", "two", "up", "water", "weapon_dps", "weapon_offhand_dps", "weapon_offhand_speed", "weapon_speed", "single", "aoe", "cleave", "percent", "last_judgment_target", "unit", "ready", "refreshable", "pvptalent", "conduit", "legendary", "runeforge", "covenant", "soulbind", "enabled", "full_recharge_time", "time_to_max_charges", "remains_guess", "execute", "actual", "current", "cast_regen", "boss", "exists", "disabled", "fight_remains", "last_used", "time_since", "max" }
