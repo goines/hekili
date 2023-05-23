@@ -168,7 +168,7 @@ spec:RegisterAuras( {
     danse_macabre = {
         id = 393969,
         duration = function () return talent.subterfuge.enabled and 9 or 8 end,
-        max_stack = 1
+        max_stack = 10
     },
     finality_black_powder = {
         id = 385948,
@@ -542,25 +542,33 @@ spec:RegisterHook( "runHandler", function( ability )
     local a = class.abilities[ ability ]
 
     if stealthed.mantle and ( not a or a.startsCombat ) then
-        if talent.subterfuge.enabled and stealthed.mantle then
+        if talent.subterfuge.enabled then
             applyBuff( "subterfuge" )
         end
 
-        if legendary.mark_of_the_master_assassin.enabled and stealthed.mantle then
-            applyBuff( "master_assassins_mark", 4 )
+        if legendary.mark_of_the_master_assassin.enabled then
+            applyBuff( "master_assassins_mark" )
         end
 
         if buff.stealth.up then
             setCooldown( "stealth", 2 )
         end
+
         removeBuff( "stealth" )
         removeBuff( "vanish" )
         removeBuff( "shadowmeld" )
     end
 
-    if buff.shadow_dance.up and talent.danse_macabre.enabled then
+    if buff.shadow_dance.up and talent.danse_macabre.enabled and not danse_macabre_tracker[ a.key ] then
         danse_macabre_tracker[ a.key ] = true
+        addStack( "danse_macabre" )
     end
+
+    if buff.cold_blood.up and ( not a or a.startsCombat ) then
+        removeBuff( "cold_blood" )
+    end
+
+    class.abilities.apply_poison = class.abilities[ action.apply_poison_actual.next_poison ]
 end )
 
 
@@ -611,30 +619,6 @@ spec:RegisterHook( "reset_precast", function( amt, resource )
     class.abilities.apply_poison = class.abilities[ action.apply_poison_actual.next_poison ]
 
     if buff.cold_blood.up then setCooldown( "cold_blood", action.cold_blood.cooldown ) end
-end )
-
-spec:RegisterHook( "runHandler", function( ability )
-    local a = class.abilities[ ability ]
-
-    if stealthed.all and ( not a or a.startsCombat ) then
-        if buff.stealth.up then
-            setCooldown( "stealth", 2 )
-        end
-
-        if legendary.mark_of_the_master_assassin.enabled and stealthed.mantle then
-            applyBuff( "master_assassins_mark" )
-        end
-
-        removeBuff( "stealth" )
-        removeBuff( "shadowmeld" )
-        removeBuff( "vanish" )
-    end
-
-    if buff.cold_blood.up and ( not a or a.startsCombat ) then
-        removeBuff( "cold_blood" )
-    end
-
-    class.abilities.apply_poison = class.abilities[ action.apply_poison_actual.next_poison ]
 end )
 
 spec:RegisterUnitEvent( "UNIT_POWER_FREQUENT", "player", nil, function( event, unit, powerType )
