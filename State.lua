@@ -3796,8 +3796,8 @@ do
                 return aura.duration or 15
 
             elseif k == "refreshable" then
-                local ad = aura.duration or 30
-                return ad > 0 and t.remains < 0.3 * ad
+                local tr = t.remains
+                return tr == 0 or tr < ( 0.3 * ( aura.duration or 30 ) )
 
             elseif k == "time_to_refresh" then
                 local remains = t.remains
@@ -4819,10 +4819,8 @@ do
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0
 
             elseif k == "refreshable" then
-                if t.remains == 0 then return false end
-
-                local ad = aura.duration or 30
-                return ad > 0 and t.remains < 0.3 * ad
+                local tr = t.remains
+                return tr == 0 or tr < 0.3 * ( aura.duration or 30 )
 
             elseif k == "time_to_refresh" then
                 return t.up and max( 0, 0.01 + t.remains - ( 0.3 * ( aura.duration or 30 ) ) ) or 0
@@ -7248,8 +7246,11 @@ function state:TimeToReady( action, pool )
     local z = ability.id
 
     if z < -99 or z > 0 then
-        -- if not ability.dual_cast and ( ability.gcd ~= "off" or ( ability.item and not ability.essence ) or not ability.interrupt ) then
-        if not self.safebool( self.args.use_off_gcd ) then
+        -- Don't use before the GCD expires, unless:
+        -- 1. The "use_off_gcd" flag is set in the priority.
+        -- 2. The ability is flagged as an interrupt or defensive.
+        local requires = ability.toggle
+        if requires ~= "interrupts" and requires ~= "defensives" and not self.safebool( self.args.use_off_gcd ) then
             wait = max( wait, self.cooldown.global_cooldown.remains )
         end
 
