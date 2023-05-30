@@ -2253,12 +2253,16 @@ do
         self.activeThreadTime = 0
     end
 
+
+    local frameSpans = {}
+
     Hekili.Engine:SetScript( "OnUpdate", function( self, elapsed )
         if not self.activeThread then
             self.refreshTimer = self.refreshTimer + elapsed
+            insert( frameSpans, elapsed )
         end
 
-        if not Hekili.Pause then
+        if Hekili.DB.profile.enabled and not Hekili.Pause then
             self.refreshRate = self.refreshRate or 5
             self.combatRate = self.combatRate or 0.25
 
@@ -2286,11 +2290,27 @@ do
 
                 if not self.firstThreadCompleted then
                     Hekili.maxFrameTime = 100
+                end
+
+                local averageSpan = 0
+                if #frameSpans > 0 then
+                    for _, span in ipairs( frameSpans ) do
+                        averageSpan = averageSpan + span
+                    end
+                    averageSpan = 1000 * averageSpan / #frameSpans
+                    wipe( frameSpans )
+
+                    Hekili.maxFrameTime = Clamp( 0.6 * averageSpan, 3, 10 ) -- Dynamically adjust to 60% of (seemingly) average frame rate between updates.
+                else
+                    Hekili.maxFrameTime = Hekili.maxFrameTime or 10
+                end
+
+                --[[
                 elseif Hekili:GetActiveSpecOption( "throttleTime" ) then
                     Hekili.maxFrameTime = Hekili:GetActiveSpecOption( "maxTime" ) or 15
                 else
                     Hekili.maxFrameTime = 15
-                end
+                end ]]
 
                 thread = self.activeThread
             end
@@ -2736,8 +2756,8 @@ do
         b.EmpowerLevel:SetText( empText )
 
         -- Mover Stuff.
-        b:SetScript("OnMouseDown", Button_OnMouseDown)
-        b:SetScript("OnMouseUp", Button_OnMouseUp)
+        b:SetScript( "OnMouseDown", Button_OnMouseDown )
+        b:SetScript( "OnMouseUp", Button_OnMouseUp )
 
         b:SetScript( "OnEnter", function( self )
             local H = Hekili
