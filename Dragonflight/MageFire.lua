@@ -14,98 +14,101 @@ local spec = Hekili:NewSpecialization( 63 )
 spec:RegisterResource( Enum.PowerType.ArcaneCharges )
 spec:RegisterResource( Enum.PowerType.Mana )
 
--- Talents
 spec:RegisterTalents( {
-    -- Mage
-    accumulative_shielding   = { 62093, 382800, 2 }, -- Your barrier's cooldown recharges 20% faster while the shield persists.
-    alter_time               = { 62115, 342245, 1 }, -- Alters the fabric of time, returning you to your current location and health when cast a second time, or after 10 seconds. Effect negated by long distance or death.
-    arcane_warding           = { 62114, 383092, 2 }, -- Reduces magic damage taken by 3%.
-    blast_wave               = { 62103, 157981, 1 }, -- Causes an explosion around yourself, dealing 916 Fire damage to all enemies within 8 yards, knocking them back, and reducing movement speed by 70% for 6 sec.
-    cryofreeze               = { 62107, 382292, 2 }, -- While inside Ice Block, you heal for 40% of your maximum health over the duration.
-    displacement             = { 62092, 389713, 1 }, -- Teleports you back to where you last Blinked. Only usable within 8 sec of Blinking.
-    diverted_energy          = { 62101, 382270, 2 }, -- Your Barriers heal you for 10% of the damage absorbed.
-    dragons_breath           = { 62091, 31661 , 1 }, -- Enemies in a cone in front of you take 1,130 Fire damage and are disoriented for 4 sec. Damage will cancel the effect. Always deals a critical strike and contributes to Hot Streak.
-    energized_barriers       = { 62100, 386828, 1 }, -- When your barrier receives melee attacks, you have a 10% chance to be granted 1 Fire Blast charge. Casting your barrier removes all snare effects.
-    flow_of_time             = { 62096, 382268, 2 }, -- The cooldown of Blink is reduced by 2.0 sec.
-    freezing_cold            = { 62087, 386763, 1 }, -- Enemies hit by Cone of Cold are frozen in place for 5 sec instead of snared. When your roots expire or are dispelled, your target is snared by 80%, decaying over 3 sec.
-    frigid_winds             = { 62128, 235224, 2 }, -- All of your snare effects reduce the target's movement speed by an additional 10%.
-    greater_invisibility     = { 62095, 110959, 1 }, -- Makes you invisible and untargetable for 20 sec, removing all threat. Any action taken cancels this effect. You take 60% reduced damage while invisible and for 3 sec after reappearing.
-    ice_block                = { 62122, 45438 , 1 }, -- Encases you in a block of ice, protecting you from all attacks and damage for 10 sec, but during that time you cannot attack, move, or cast spells. While inside Ice Block, you heal for 40% of your maximum health over the duration. Causes Hypothermia, preventing you from recasting Ice Block for 30 sec.
-    ice_floes                = { 62105, 108839, 1 }, -- Makes your next Mage spell with a cast time shorter than 10 sec castable while moving. Unaffected by the global cooldown and castable while casting.
-    ice_nova                 = { 62126, 157997, 1 }, -- Causes a whirl of icy wind around the enemy, dealing 2,328 Frost damage to the target and reduced damage to all other enemies within 8 yards, and freezing them in place for 2 sec.
-    ice_ward                 = { 62086, 205036, 1 }, -- Frost Nova now has 2 charges.
-    improved_frost_nova      = { 62108, 343183, 1 }, -- Frost Nova duration is increased by 2 sec.
-    incantation_of_swiftness = { 62112, 382293, 2 }, -- Invisibility increases your movement speed by 40% for 6 sec.
-    incanters_flow           = { 62113, 1463  , 1 }, -- Magical energy flows through you while in combat, building up to 20% increased damage and then diminishing down to 4% increased damage, cycling every 10 sec.
-    invisibility             = { 62118, 66    , 1 }, -- Turns you invisible over 3 sec, reducing threat each second. While invisible, you are untargetable by enemies. Lasts 20 sec. Taking any action cancels the effect.
-    mass_polymorph           = { 62106, 383121, 1 }, -- Transforms all enemies within 10 yards into sheep, wandering around incapacitated for 1 min. While affected, the victims cannot take actions but will regenerate health very quickly. Damage will cancel the effect. Only works on Beasts, Humanoids and Critters.
-    mass_slow                = { 62109, 391102, 1 }, -- Slow applies to all enemies within 5 yds of your target.
-    master_of_time           = { 62102, 342249, 1 }, -- Reduces the cooldown of Alter Time by 10 sec. Alter Time resets the cooldown of Blink when you return to your original location.
-    meteor                   = { 62090, 153561, 1 }, -- Calls down a meteor which lands at the target location after 3 sec, dealing 5,044 Fire damage, split evenly between all targets within 8 yards, and burns the ground, dealing 1,280 Fire damage over 8.5 sec to all enemies in the area.
-    mirror_image             = { 62124, 55342 , 1 }, -- Creates 3 copies of you nearby for 40 sec, which cast spells and attack your enemies. While your images are active damage taken is reduced by 20%. Taking direct damage will cause one of your images to dissipate.
-    overflowing_energy       = { 62120, 390218, 1 }, -- Your spell critical strike damage is increased by 10%. When your direct damage spells fail to critically strike a target, your spell critical strike chance is increased by 2%, up to 10% for 8 sec. When your spells critically strike Overflowing Energy is reset.
-    quick_witted             = { 62104, 382297, 1 }, -- Successfully interrupting an enemy with Counterspell reduces its cooldown by 4 sec.
-    reabsorption             = { 62125, 382820, 1 }, -- You are healed for 5% of your maximum health whenever a Mirror Image dissipates due to direct damage.
-    reduplication            = { 62125, 382569, 1 }, -- Mirror Image's cooldown is reduced by 10 sec whenever a Mirror Image dissipates due to direct damage.
-    remove_curse             = { 62116, 475   , 1 }, -- Removes all Curses from a friendly target.
-    rigid_ice                = { 62110, 382481, 1 }, -- Frost Nova can withstand 80% more damage before breaking.
-    ring_of_frost            = { 62088, 113724, 1 }, -- Summons a Ring of Frost for 10 sec at the target location. Enemies entering the ring are incapacitated for 10 sec. Limit 10 targets. When the incapacitate expires, enemies are slowed by 65% for 4 sec.
-    rune_of_power            = { 62113, 116011, 1 }, -- Places a Rune of Power on the ground for 12 sec which increases your spell damage by 40% while you stand within 8 yds. Casting Combustion will also create a Rune of Power at your location.
-    shifting_power           = { 62085, 382440, 1 }, -- Draw power from the Night Fae, dealing 4,113 Nature damage over 3.5 sec to enemies within 18 yds. While channeling, your Mage ability cooldowns are reduced by 12 sec over 3.5 sec.
-    shimmer                  = { 62105, 212653, 1 }, -- Teleports you 20 yards forward, unless something is in the way. Unaffected by the global cooldown and castable while casting. Gain a shield that absorbs 3% of your maximum health for 15 sec after you Shimmer.
-    slow                     = { 62097, 31589 , 1 }, -- Reduces the target's movement speed by 50% for 15 sec.
-    spellsteal               = { 62084, 30449 , 1 }, -- Steals a beneficial magic effect from the target. This effect lasts a maximum of 2 min.
-    tempest_barrier          = { 62111, 382289, 2 }, -- Gain a shield that absorbs 3% of your maximum health for 15 sec after you Blink.
-    temporal_velocity        = { 62099, 382826, 2 }, -- Increases your movement speed by 5% for 2 sec after casting Blink and 20% for 5 sec after returning from Alter Time.
-    temporal_warp            = { 62094, 386539, 1 }, -- While you have Temporal Displacement or other similar effects, you may use Time Warp to grant yourself 30% Haste for 40 sec.
-    time_anomaly             = { 62094, 383243, 1 }, -- At any moment, you have a chance to gain Combustion for 5 sec, 1 Fire Blast charge, or Time Warp for 6 sec.
-    time_manipulation        = { 62129, 387807, 2 }, -- Casting Fire Blast reduces the cooldown of your loss of control abilities by 1 sec.
-    tome_of_antonidas        = { 62098, 382490, 1 }, -- Increases Haste by 2%.
-    tome_of_rhonin           = { 62127, 382493, 1 }, -- Increases Critical Strike chance by 2%.
-    volatile_detonation      = { 62089, 389627, 1 }, -- Greatly increases the effect of Blast Wave's knockback. Blast Wave's cooldown is reduced by 5 seconds.
-    winters_protection       = { 62123, 382424, 2 }, -- The cooldown of Ice Block is reduced by 20 sec.
+    -- Mage Talents
+    accumulative_shielding   = { 62093, 382800, 1 }, -- Your barrier's cooldown recharges $s1% faster while the shield persists.
+    alter_time               = { 62115, 342245, 1 }, -- Alters the fabric of time, returning you to your current location and health when cast a second time, or after ${$110909d+$s3} sec.  Effect negated by long distance or death.
+    arcane_warding           = { 62114, 383092, 2 }, -- Reduces magic damage taken by $s1%.
+    blast_wave               = { 62103, 157981, 1 }, -- Causes an explosion around yourself, dealing $s1 Fire damage to all enemies within $A1 yds, knocking them back, and reducing movement speed by $s2% for $d.
+    cryofreeze               = { 62107, 382292, 2 }, -- While inside Ice Block, you heal for ${$s1*10}% of your maximum health over the duration.
+    displacement             = { 62095, 389713, 1 }, -- Teleports you back to where you last Blinked and heals you for ${$414462s1/100*$mhp} health. Only usable within $389714d of Blinking.
+    diverted_energy          = { 62101, 382270, 2 }, -- Your Barriers heal you for $s1% of the damage absorbed.
+    dragons_breath           = { 62091, 31661 , 1 }, -- Enemies in a cone in front of you take $s2 Fire damage and are disoriented for $d. Damage will cancel the effect.$?a235870[; Always deals a critical strike and contributes to Hot Streak.][]
+    energized_barriers       = { 62100, 386828, 1 }, -- When your barrier receives melee attacks, you have a $s1% chance to be granted $?c1[Clearcasting]?c2[1 Fire Blast charge]$?c3[Fingers of Frost]. ; Casting your barrier removes all snare effects.
+    flow_of_time             = { 62096, 382268, 2 }, -- The cooldowns of Blink and Shimmer are reduced by ${$s1/-1000} sec.
+    freezing_cold            = { 62087, 386763, 1 }, -- Enemies hit by Cone of Cold are frozen in place for $386770d instead of snared.; When your roots expire or are dispelled, your target is snared by $394255s1%, decaying over $394255d.
+    frigid_winds             = { 62128, 235224, 2 }, -- All of your snare effects reduce the target's movement speed by an additional $s1%.
+    greater_invisibility     = { 93524, 110959, 1 }, -- Makes you invisible and untargetable for $110960d, removing all threat. Any action taken cancels this effect.; You take $113862s1% reduced damage while invisible and for 3 sec after reappearing.$?a382293[; Increases your movement speed by ${$382293s1*0.40}% for $337278d.][]
+    ice_block                = { 62122, 45438 , 1 }, -- Encases you in a block of ice, protecting you from all attacks and damage for $d, but during that time you cannot attack, move, or cast spells.$?a382292[; While inside Ice Block, you heal for ${$382292s1*10}% of your maximum health over the duration.][]; Causes Hypothermia, preventing you from recasting Ice Block for $41425d.
+    ice_cold                 = { 62085, 414659, 1 }, -- Ice Block now reduces all damage taken by $414658s8% for $414658d but no longer grants Immunity, prevents movement, attacks, or casting spells. Does not incur the Global Cooldown.
+    ice_floes                = { 62105, 108839, 1 }, -- Makes your next Mage spell with a cast time shorter than $s2 sec castable while moving. Unaffected by the global cooldown and castable while casting.
+    ice_nova                 = { 62126, 157997, 1 }, -- Causes a whirl of icy wind around the enemy, dealing $s1 Frost damage to the target and reduced damage to all other enemies within $a2 yds, and freezing them in place for $d.
+    ice_ward                 = { 62086, 205036, 1 }, -- Frost Nova now has ${1+$m1} charges.
+    improved_frost_nova      = { 62108, 343183, 1 }, -- Frost Nova duration is increased by ${$s1/1000} sec.
+    incantation_of_swiftness = { 62112, 382293, 2 }, -- $?s110959[Greater ][]Invisibility increases your movement speed by $s1% for $337278d.
+    incanters_flow           = { 62118, 1463  , 1 }, -- Magical energy flows through you while in combat, building up to ${$116267m1*5}% increased damage and then diminishing down to $116267s1% increased damage, cycling every 10 sec.
+    mass_barrier             = { 62092, 414660, 1 }, -- Cast $?c1[Prismatic]?c2[Blazing]?c3[Ice][] Barrier on yourself and $414661i nearby allies.
+    mass_invisibility        = { 62092, 414664, 1 }, -- You and your allies within $A1 yards instantly become invisible for $d. Taking any action will cancel the effect.; $?a415945[]; [Does not affect allies in combat.]
+    mass_polymorph           = { 62106, 383121, 1 }, -- Transforms all enemies within $a yards into sheep, wandering around incapacitated for 1 min. While affected, the victims cannot take actions but will regenerate health very quickly. Damage will cancel the effect.; Only works on Beasts, Humanoids and Critters.
+    mass_slow                = { 62109, 391102, 1 }, -- Slow applies to all enemies within $391104A1 yds of your target.
+    master_of_time           = { 62102, 342249, 1 }, -- Reduces the cooldown of Alter Time by ${$s1/-1000} sec. ; Alter Time resets the cooldown of Blink and Shimmer when you return to your original location.
+    mirror_image             = { 62124, 55342 , 1 }, -- Creates $s2 copies of you nearby for $55342d, which cast spells and attack your enemies.; While your images are active damage taken is reduced by $s3%. Taking direct damage will cause one of your images to dissipate.$?a382820[; You are healed for $382998s1% of your maximum health whenever a Mirror Image dissipates due to direct damage.]?a382569[; Mirror Image's cooldown is reduced by ${$382569s1/1000} sec whenever a Mirror Image dissipates due to direct damage.][]
+    overflowing_energy       = { 62120, 390218, 1 }, -- Your spell critical strike damage is increased by $s1%. When your direct damage spells fail to critically strike a target, your spell critical strike chance is increased by $394195s1%, up to ${$394195u*$394195s1}% for $394195d. ; When your spells critically strike Overflowing Energy is reset.
+    quick_witted             = { 62104, 382297, 1 }, -- Successfully interrupting an enemy with Counterspell reduces its cooldown by ${$s1/1000} sec.
+    reabsorption             = { 62125, 382820, 1 }, -- You are healed for $382998s1% of your maximum health whenever a Mirror Image dissipates due to direct damage.
+    reduplication            = { 62125, 382569, 1 }, -- Mirror Image's cooldown is reduced by ${$s1/1000} sec whenever a Mirror Image dissipates due to direct damage.
+    remove_curse             = { 62116, 475   , 1 }, -- Removes all Curses from a friendly target. $?s115700[If any Curses are successfully removed, you deal $115701s1% additional damage for $115701d.][]
+    rigid_ice                = { 62110, 382481, 1 }, -- Frost Nova can withstand $s1% more damage before breaking.
+    ring_of_frost            = { 62088, 113724, 1 }, -- Summons a Ring of Frost for $d at the target location. Enemies entering the ring are incapacitated for $82691d. Limit 10 targets.; When the incapacitate expires, enemies are slowed by $321329s1% for $321329d.
+    shifting_power           = { 62113, 382440, 1 }, -- Draw power from the Night Fae, dealing ${$382445s1*$d/$t} Nature damage over $d to enemies within $382445A1 yds. ; While channeling, your Mage ability cooldowns are reduced by ${-$s2/1000*$d/$t} sec over $d.
+    shimmer                  = { 62105, 212653, 1 }, -- Teleports you $A1 yds forward, unless something is in the way. Unaffected by the global cooldown and castable while casting.$?a382289[; Gain a shield that absorbs $382289s1% of your maximum health for $382290d after you Shimmer.][]
+    slow                     = { 62097, 31589 , 1 }, -- Reduces the target's movement speed by $s1% for $d.$?a391102[; Applies to enemies within $391104A1 yds of the target.][]
+    spellsteal               = { 62084, 30449 , 1 }, -- Steals $?s198100[all beneficial magic effects from the target. These effects lasts a maximum of 2 min.][a beneficial magic effect from the target. This effect lasts a maximum of 2 min.] $?s115713[If you successfully steal a spell, you are also healed for $115714s1% of your maximum health.][]
+    tempest_barrier          = { 62111, 382289, 2 }, -- Gain a shield that absorbs $s1% of your maximum health for $382290d after you Blink.
+    temporal_velocity        = { 62099, 382826, 2 }, -- Increases your movement speed by $s2% for $384360d after casting Blink and $s1% for $382824d after returning from Alter Time.
+    temporal_warp            = { 62094, 386539, 1 }, -- While you have Temporal Displacement or other similar effects, you may use Time Warp to grant yourself $386540s1% Haste for $386540d.
+    time_anomaly             = { 62094, 383243, 1 }, -- At any moment, you have a chance to gain $?c1[Arcane Surge for $s1 sec, Clearcasting]?c2[Combustion for $s4 sec, 1 Fire Blast charge]?c3[Icy Veins for $s5 sec, Fingers of Frost][], or Time Warp for 6 sec.
+    time_manipulation        = { 62129, 387807, 1 }, -- Casting $?c1[Clearcasting Arcane Missiles]?c2[Fire Blast]?c3[Ice Lance on Frozen targets][] reduces the cooldown of your loss of control abilities by ${-$s1/1000} sec.
+    tome_of_antonidas        = { 62098, 382490, 1 }, -- Increases Haste by $s1%.
+    tome_of_rhonin           = { 62127, 382493, 1 }, -- Increases Critical Strike chance by $s1%.
+    volatile_detonation      = { 62089, 389627, 1 }, -- Greatly increases the effect of Blast Wave's knockback. Blast Wave's cooldown is reduced by ${$s1/-1000} sec.
+    winters_protection       = { 62123, 382424, 2 }, -- The cooldown of Ice Block is reduced by ${$s1/-1000} sec.
 
-    -- Fire
-    alexstraszas_fury        = { 62220, 235870, 1 }, -- Phoenix Flames and Dragon's Breath always critically strikes and Dragon's Breath deals 50% increased critical strike damage contributes to Hot Streak.
-    blazing_barrier          = { 62119, 235313, 1 }, -- Shields you in flame, absorbing 8,622 damage for 1 min. Melee attacks against you cause the attacker to take 242 Fire damage.
-    call_of_the_sun_king     = { 62210, 343222, 1 }, -- Phoenix Flames gains 1 additional charge.
-    cauterize                = { 62206, 86949 , 1 }, -- Fatal damage instead brings you to 35% health and then burns you for 28% of your maximum health over 6 sec. While burning, movement slowing effects are suppressed and your movement speed is increased by 150%. This effect cannot occur more than once every 5 min.
-    combustion               = { 62207, 190319, 1 }, -- Engulfs you in flames for 10 sec, increasing your spells' critical strike chance by 100% . Castable while casting other spells.
-    conflagration            = { 62188, 205023, 1 }, -- Fireball applies Conflagration to the target, dealing an additional 145 Fire damage over 8 sec. Enemies affected by either Conflagration or Ignite have a 10% chance to flare up and deal 131 Fire damage to nearby enemies.
-    controlled_destruction   = { 62204, 383669, 2 }, -- Pyroblast's initial damage is increased by 5% when the target is above 70% health or below 30% health.
-    critical_mass            = { 62219, 117216, 2 }, -- Your spells have a 15% increased chance to deal a critical strike. You gain 10% more of the Critical Strike stat from all sources.
-    feel_the_burn            = { 62195, 383391, 2 }, -- Fire Blast increases your Mastery by 3% for 5 sec. This effect stacks up to 3 times.
-    fervent_flickering       = { 62216, 387044, 1 }, -- Ignite's damage has a 5% chance to reduce the cooldown of Fire Blast by 1 sec.
-    fevered_incantation      = { 62187, 383810, 2 }, -- Each consecutive critical strike you deal increases critical strike damage you deal by 1%, up to 5% for 6 sec.
-    fiery_rush               = { 62203, 383634, 1 }, -- While Combustion is active, your Fire Blast and Phoenix Flames recharge 50% faster.
-    fire_blast               = { 62214, 108853, 1 }, -- Blasts the enemy for 2,047 Fire damage. Fire: Castable while casting other spells. Always deals a critical strike.
-    firefall                 = { 62197, 384033, 1 }, -- Damaging an enemy with 30 Fireballs or Pyroblasts causes your next Fireball to call down a Meteor on your target. Hitting an enemy player counts as double.
-    firemind                 = { 62208, 383499, 2 }, -- Consuming Hot Streak grants you 1% increased Intellect for 12 sec. This effect stacks up to 3 times.
-    firestarter              = { 62083, 205026, 1 }, -- Your Fireball and Pyroblast spells always deal a critical strike when the target is above 90% health.
-    flame_accelerant         = { 62200, 203275, 2 }, -- If you have not cast Fireball for 8 sec, your next Fireball will deal 70% increased damage with a 40% reduced cast time.
-    flame_on                 = { 62190, 205029, 2 }, -- Reduces the cooldown of Fire Blast by 2 seconds and increases the maximum number of charges by 1.
-    flame_patch              = { 62193, 205037, 1 }, -- Flamestrike leaves behind a patch of flames that burns enemies within it for 788 Fire damage over 8 sec.
-    flamestrike              = { 62192, 2120  , 1 }, -- Calls down a pillar of fire, burning all enemies within the area for 1,240 Fire damage and reducing their movement speed by 20% for 8 sec.
-    from_the_ashes           = { 62220, 342344, 1 }, -- Increases Mastery by 2% for each charge of Phoenix Flames off cooldown and your direct-damage critical strikes reduce its cooldown by 1 sec.
-    hyperthermia             = { 62186, 383860, 1 }, -- When Hot Streak activates, you have a low chance to cause all Pyroblasts and Flamestrikes to have no cast time and be guaranteed critical strikes for 5 sec.
-    improved_combustion      = { 62201, 383967, 1 }, -- Combustion grants Mastery equal to 50% of your Critical Strike stat and lasts 2 sec longer.
-    improved_flamestrike     = { 62191, 343230, 1 }, -- Flamestrike's cast time is reduced by 1.0 sec and its radius is increased by 15%.
-    improved_scorch          = { 62211, 383604, 2 }, -- Casting Scorch on targets below 30% health increase the target's damage taken from you by 4% for 8 sec, stacking up to 3 times. Additionally, Scorch critical strikes increase your movement speed by 30% for 3 sec.
-    incendiary_eruptions     = { 62189, 383665, 1 }, -- Enemies damaged by Flame Patch have an 5% chance to erupt into a Living Bomb.
-    kindling                 = { 62198, 155148, 1 }, -- Your Fireball, Pyroblast, Fire Blast, and Phoenix Flames critical strikes reduce the remaining cooldown on Combustion by 1.0 sec.
-    living_bomb              = { 62194, 44457 , 1 }, -- The target becomes a Living Bomb, taking 581 Fire damage over 3.5 sec, and then exploding to deal an additional 340 Fire damage to the target and reduced damage to all other enemies within 10 yards. Other enemies hit by this explosion also become a Living Bomb, but this effect cannot spread further.
-    master_of_flame          = { 62196, 384174, 1 }, -- Ignite deals 15% more damage while Combustion is not active. Fire Blast spreads Ignite to 4 additional nearby targets during Combustion.
-    phoenix_flames           = { 62217, 257541, 1 }, -- Hurls a Phoenix that deals 1,641 Fire damage to the target and reduced damage to other nearby enemies. Always deals a critical strike.
-    phoenix_reborn           = { 62199, 383476, 1 }, -- Targets affected by your Ignite have a chance to erupt in flame, taking 242 additional Fire damage and reducing the remaining cooldown of Phoenix Flames by 10 sec.
-    pyroblast                = { 62215, 11366 , 1 }, -- Hurls an immense fiery boulder that causes 2,929 Fire damage. Pyroblast's initial damage is increased by 5% when the target is above 70% health or below 30% health.
-    pyroclasm                = { 62209, 269650, 1 }, -- Consuming Hot Streak has a 15% chance to make your next non-instant Pyroblast cast within 15 sec deal 230% additional damage. Maximum 2 stacks.
-    pyromaniac               = { 62197, 205020, 1 }, -- Casting Pyroblast or Flamestrike while Hot Streak is active has an 8% chance to instantly reactivate Hot Streak.
-    pyrotechnics             = { 62218, 157642, 1 }, -- Each time your Fireball fails to critically strike a target, it gains a stacking 10% increased critical strike chance. Effect ends when Fireball critically strikes.
-    scorch                   = { 62213, 2948  , 1 }, -- Scorches an enemy for 397 Fire damage. Castable while moving.
-    searing_touch            = { 62212, 269644, 1 }, -- Scorch deals 150% increased damage and is a guaranteed Critical Strike when the target is below 30% health.
-    sun_kings_blessing       = { 62205, 383886, 1 }, -- After consuming 8 Hot Streaks, your next non-instant Pyroblast or Flamestrike cast within 15 sec grants you Combustion for 6 sec.
-    tempered_flames          = { 62201, 383659, 1 }, -- Pyroblast has a 30% reduced cast time and a 10% increased critical strike chance. The duration of Combustion is reduced by 50%.
-    wildfire                 = { 62202, 383489, 2 }, -- Ignite deals 5% additional damage. When you activate Combustion, you gain 4% Critical Strike, and up to 4 nearby allies gain 1% Critical Strike for 10 sec.
+    -- Fire Talents
+    alexstraszas_fury        = { 62220, 235870, 1 }, -- Phoenix Flames and Dragon's Breath always critically strikes and Dragon's Breath deals $s2% increased critical strike damage contributes to Hot Streak. ;
+    blazing_barrier          = { 62119, 235313, 1 }, -- Shields you in flame, absorbing $<shield> damage$?s194315[ and reducing Physical damage taken by $s3%][] for $d.; Melee attacks against you cause the attacker to take $235314s1 Fire damage.
+    call_of_the_sun_king     = { 62210, 343222, 1 }, -- Phoenix Flames deals $s2% increased damage and gains $s1 additional charge.
+    combustion               = { 62207, 190319, 1 }, -- Engulfs you in flames for $d, increasing your spells' critical strike chance by $s1% $?a383967[and granting you Mastery equal to $s3% of your Critical Strike stat][]. Castable while casting other spells.$?a383489[; When you activate Combustion, you gain $383489s3% Critical Strike, and up to $383493I nearby allies gain $383489s4% Critical Strike for $383493d.][]
+    conflagration            = { 62196, 205023, 1 }, -- Fireball and Pyroblast apply Conflagration to the target, dealing an additional $226757o1 Fire damage over $226757d.; Enemies affected by either Conflagration or Ignite have a $s1% chance to flare up and deal $205345s1 Fire damage to nearby enemies.
+    controlled_destruction   = { 62204, 383669, 2 }, -- Pyroblast's damage is increased by $s1% when the target is above $s3% health or below $s2% health.
+    convection               = { 62188, 416715, 1 }, -- Each time Living Bomb explodes it has a $s1% chance to reduce its cooldown by ${$s2/1000}.1 sec.
+    critical_mass            = { 62219, 117216, 2 }, -- Your spells have a $s1% increased chance to deal a critical strike.; You gain $s2% more of the Critical Strike stat from all sources.
+    deep_impact              = { 62186, 416719, 1 }, -- Meteor's damage is increased by $s1% but is now split evenly between all enemies hit. Additionally, its cooldown is reduced by ${$s2/-1000} sec.
+    feel_the_burn            = { 62195, 383391, 1 }, -- Fire Blast and Phoenix Flames increase your mastery by ${$s1*$mas}% for $383395d. This effect stacks up to $383395u times.
+    fervent_flickering       = { 62218, 387044, 1 }, -- Ignite's damage has a $h% chance to reduce the cooldown of Fire Blast by $s1 sec.
+    fevered_incantation      = { 62209, 383810, 1 }, -- Each consecutive critical strike you deal increases critical strike damage you deal by $s1%, up to ${ $s1*$383811u}% for $383811d.
+    fiery_rush               = { 62203, 383634, 1 }, -- While Combustion is active, your Fire Blast and Phoenix Flames recharge $383637s2% faster.
+    fire_blast               = { 62214, 108853, 1 }, -- Blasts the enemy for $s1 Fire damage. ; Fire: Castable while casting other spells. Always deals a critical strike.
+    firefall                 = { 62197, 384033, 1 }, -- Damaging an enemy with $s1 Fireballs or Pyroblasts causes your next Fireball to call down a Meteor on your target$?a134735[ at $s2% effectiveness][].
+    firemind                 = { 62208, 383499, 1 }, -- Consuming Hot Streak grants you $s3% increased Intellect for $383501d. This effect stacks up to $s2 times.
+    firestarter              = { 62083, 205026, 1 }, -- Your Fireball and Pyroblast spells always deal a critical strike when the target is above $s1% health.
+    flame_accelerant         = { 62200, 203275, 2 }, -- If you have not cast Fireball for $203278d, your next Fireball will deal $m1% increased damage with a $m2% reduced cast time.
+    flame_on                 = { 62190, 205029, 2 }, -- Reduces the cooldown of Fire Blast by $s3 sec and increases the maximum number of charges by $s1.
+    flame_patch              = { 62193, 205037, 1 }, -- Flamestrike leaves behind a patch of flames that burns enemies within it for ${8*$205472s1} Fire damage over $205470d.
+    from_the_ashes           = { 62220, 342344, 1 }, -- Increases Mastery by $s3% for each charge of Phoenix Flames on cooldown and your direct-damage critical strikes reduce its cooldown by ${$s2/-1000} sec.
+    fuel_the_fire            = { 62191, 416094, 1 }, -- Flamestrike has a chance equal to $s1% of your spell critical strike chance to build up to a Hot Streak.
+    hyperthermia             = { 93682, 383860, 1 }, -- While Combustion is not active, consuming Hot Streak has a low chance to cause all Pyroblasts and Flamestrikes to have no cast time and be guaranteed critical strikes for $383874d.
+    improved_combustion      = { 62201, 383967, 1 }, -- Combustion grants mastery equal to $s2% of your Critical Strike stat and lasts ${$s1/1000} sec longer.
+    improved_scorch          = { 62211, 383604, 1 }, -- Casting Scorch on targets below $s2% health increase the target's damage taken from you by $s3% for $383608d, stacking up to $383608u times. ; Additionally, Scorch critical strikes increase your movement speed by $236060s1% for $236060d.
+    incendiary_eruptions     = { 62189, 383665, 1 }, -- Enemies damaged by Flame Patch have a $h% chance to erupt into a Living Bomb.
+    inflame                  = { 93680, 417467, 1 }, -- Hot Streak increases the amount of Ignite damage from Pyroblast or Flamestrike by an additional $s1%.
+    intensifying_flame       = { 62206, 416714, 1 }, -- While Ignite is on $s1 or fewer enemies it flares up dealing an additional $s2% of its damage to affected targets.
+    kindling                 = { 62198, 155148, 1 }, -- Your Fireball, Pyroblast, Fire Blast, Scorch and Phoenix Flames critical strikes reduce the remaining cooldown on Combustion by $<cdr> sec.
+    living_bomb              = { 62194, 44457 , 1 }, -- The target becomes a Living Bomb, taking $217694o1 Fire damage over $217694d, and then exploding to deal an additional $44461s2 Fire damage to the target and reduced damage to all other enemies within $44461A2 yds.; Other enemies hit by this explosion also become a Living Bomb, but this effect cannot spread further.
+    master_of_flame          = { 93681, 384174, 1 }, -- Ignite deals $s1% more damage while Combustion is not active. Fire Blast spreads Ignite to $s2 additional nearby targets during Combustion.
+    meteor                   = { 62187, 153561, 1 }, -- Calls down a meteor which lands at the target location after $177345d, dealing $351140s1 Fire damage$?a416719[, split evenly between all targets within 8 yds][ to all enemies hit reduced beyond 8 targets], and burns the ground, dealing ${8*$155158s1} Fire damage over $175396d to all enemies in the area.
+    phoenix_flames           = { 62217, 257541, 1 }, -- Hurls a Phoenix that deals $257542s2 Fire damage to the target and reduced damage to other nearby enemies.$?a235870[; Always deals a critical strike.][]
+    phoenix_reborn           = { 62199, 383476, 1 }, -- Targets affected by your Ignite have a chance to erupt in flame, taking $383479s1 additional Fire damage and reducing the remaining cooldown of Phoenix Flames by $s1 sec.
+    pyroblast                = { 62215, 11366 , 1 }, -- Hurls an immense fiery boulder that causes $s1 Fire damage$?a321711[ and an additional $321712o2 Fire damage over $321712d][].$?a383669[; Pyroblast's initial damage is increased by $383669s1% when the target is above $383669s3% health or below $383669s2% health.][]
+    pyromaniac               = { 93680, 205020, 1 }, -- Casting Pyroblast or Flamestrike while Hot Streak is active has an $s1% chance to instantly reactivate Hot Streak.
+    pyrotechnics             = { 62216, 157642, 1 }, -- Each time your Fireball fails to critically strike a target, it gains a stacking $157644s1% increased critical strike chance. Effect ends when Fireball critically strikes.
+    scorch                   = { 62213, 2948  , 1 }, -- Scorches an enemy for $s1 Fire damage. Castable while moving.$?a383604[; Scorch critical strikes increase your movement speed by $236060s1% for $236060d.][]
+    searing_touch            = { 62212, 269644, 1 }, -- Scorch deals $s2% increased damage and is a guaranteed Critical Strike when the target is below $s1% health.
+    sun_kings_blessing       = { 62205, 383886, 1 }, -- After consuming $s1 Hot Streaks, your next non-instant Pyroblast or Flamestrike cast within $383883d grants you Combustion for $s2 sec and deals $383883s2% additional damage.
+    surging_blaze            = { 62192, 343230, 1 }, -- Flamestrike and Pyroblast cast times are reduced by ${$s1/-1000}.1 sec and damage dealt increased by $s2%.
+    tempered_flames          = { 62201, 383659, 1 }, -- Pyroblast has a $s1% reduced cast time and a $s2% increased critical strike chance. The duration of Combustion is reduced by $s3%.
+    unleashed_inferno        = { 62205, 416506, 1 }, -- While Combustion is active your Fireball, Pyroblast, Fire Blast, Scorch, and Phoenix Flames deal $s1% increased damage and reduce the cooldown of Combustion by ${$s2/1000}.2 sec.
+    wildfire                 = { 62202, 383489, 2 }, -- Your critical strike damage is increased by $s2%. When you activate Combustion, you gain $s3% additional critical strike damage, and up to $383493I nearby allies gain $s4% critical strike for $383493d.
 } )
 
 
@@ -281,7 +284,7 @@ spec:RegisterAuras( {
     firefall = {
         id = 384035,
         duration = 30,
-        max_stack = 30
+        max_stack = 15
     },
     firefall_ready = {
         id = 384038,
@@ -381,7 +384,7 @@ spec:RegisterAuras( {
     -- https://wowhead.com/beta/spell=383874
     hyperthermia = {
         id = 383874,
-        duration = 5,
+        duration = 6,
         max_stack = 1
     },
     -- Cannot be made invulnerable by Ice Block.
@@ -540,13 +543,6 @@ spec:RegisterAuras( {
         type = "Magic",
         max_stack = 1
     },
-    -- Talent: Damage done by your next non-instant Pyroblast increased by $s1%.
-    -- https://wowhead.com/beta/spell=269651
-    pyroclasm = {
-        id = 269651,
-        duration = 15,
-        max_stack = 2
-    },
     -- Talent: Increases critical strike chance of Fireball by $s1%$?a337224[ and your Mastery by ${$s2}.1%][].
     -- https://wowhead.com/beta/spell=157644
     pyrotechnics = {
@@ -570,13 +566,6 @@ spec:RegisterAuras( {
         id = 321329,
         duration = 4,
         type = "Magic",
-        max_stack = 1
-    },
-    -- Talent: Spell damage increased by $w1%.$?$w2=0[][  Health restored by $w2% per second.]
-    -- https://wowhead.com/beta/spell=116014
-    rune_of_power = {
-        id = 116014,
-        duration = 12,
         max_stack = 1
     },
     -- Talent: Every $t1 sec, deal $382445s1 Nature damage to enemies within $382445A1 yds and reduce the remaining cooldown of your abilities by ${-$s2/1000} sec.
@@ -618,7 +607,7 @@ spec:RegisterAuras( {
         id = 383883,
         duration = 15,
         max_stack = 5,
-        copy = 333315,
+        copy = { 333315, "fury_of_the_sun_king" },
         meta = {
             expiration_delay_remains = function()
                 return buff.sun_kings_blessing_ready_expiration_delay.remains
@@ -735,7 +724,15 @@ spec:RegisterStateTable( "searing_touch", setmetatable( {}, {
     end, state )
 } ) )
 
-spec:RegisterTotem( "rune_of_power", 609815 )
+spec:RegisterStateTable( "improved_scorch", setmetatable( {}, {
+    __index = setfenv( function( t, k )
+        if k == "active" then return talent.improved_scorch.enabled and target.health.pct < 30
+        elseif k == "remains" then
+            if not talent.improved_scorch.enabled or target.health.pct < 30 then return 0 end
+            return target.time_to_die
+        end
+    end, state )
+} ) )
 
 
 spec:RegisterGear( "tier30", 202554, 202552, 202551, 202550, 202549 )
@@ -848,16 +845,15 @@ spec:RegisterVariable( "firestarter_combustion", function ()
 end )
 
 -- # APL Variable Option: This variable specifies the number of targets at which Hot Streak Flamestrikes outside of Combustion should be used.
--- actions.precombat+=/variable,name=hot_streak_flamestrike,if=variable.hot_streak_flamestrike=0,value=2*talent.flame_patch+999*!talent.flame_patch
+-- actions.precombat+=/variable,name=hot_streak_flamestrike,if=variable.hot_streak_flamestrike=0,value=3*talent.flame_patch+999*!talent.flame_patch
 spec:RegisterVariable( "hot_streak_flamestrike", function ()
-    if talent.flame_patch.enabled then return 2 end
+    if talent.flame_patch.enabled then return 3 end
     return 999
 end )
 
 -- # APL Variable Option: This variable specifies the number of targets at which Hard Cast Flamestrikes outside of Combustion should be used as filler.
--- actions.precombat+=/variable,name=hard_cast_flamestrike,if=variable.hard_cast_flamestrike=0,value=3*talent.flame_patch+999*!talent.flame_patch
+-- actions.precombat+=/variable,name=hard_cast_flamestrike,if=variable.hard_cast_flamestrike=0,value=999
 spec:RegisterVariable( "hard_cast_flamestrike", function ()
-    if talent.flame_patch.enabled then return 3 end
     return 999
 end )
 
@@ -866,6 +862,12 @@ end )
 spec:RegisterVariable( "combustion_flamestrike", function ()
     if talent.flame_patch.enabled then return 3 end
     return 999
+end )
+
+-- # APL Variable Option: This variable specifies the number of targets at which Flamestrikes should be used to consume Fury of the Sun King.
+-- actions.precombat+=/variable,name=skb_flamestrike,if=variable.skb_flamestrike=0,value=3
+spec:RegisterVariable( "skb_flamestrike", function ()
+    return 3
 end )
 
 -- # APL Variable Option: This variable specifies the number of targets at which Arcane Explosion outside of Combustion should be used.
@@ -881,9 +883,9 @@ spec:RegisterVariable( "arcane_explosion_mana", function ()
 end )
 
 -- # APL Variable Option: The number of targets at which Shifting Power can used during Combustion.
--- actions.precombat+=/variable,name=combustion_shifting_power,if=variable.combustion_shifting_power=0,value=variable.combustion_flamestrike
+-- actions.precombat+=/variable,name=combustion_shifting_power,if=variable.combustion_shifting_power=0,value=999
 spec:RegisterVariable( "combustion_shifting_power", function ()
-    return variable.combustion_flamestrike
+    return 999
 end )
 
 -- # APL Variable Option: The time remaining on a cast when Combustion can be used in seconds.
@@ -974,21 +976,6 @@ spec:RegisterVariable( "phoenix_pooling", function ()
     return val
 end )
 
--- # Estimate how long Combustion will last thanks to Sun King's Blessing to determine how Fire Blasts should be used.
--- actions.combustion_phase+=/variable,use_off_gcd=1,use_while_casting=1,name=extended_combustion_remains,value=buff.combustion.remains+buff.combustion.duration*(cooldown.combustion.remains<buff.combustion.remains)
--- # Adds the duration of the Sun King's Blessing Combustion to the end of the current Combustion if the cast would start during this Combustion.
--- actions.combustion_phase+=/variable,use_off_gcd=1,use_while_casting=1,name=extended_combustion_remains,op=add,value=variable.skb_duration,if=(runeforge.sun_kings_blessing|talent.sun_kings_blessing)&(buff.sun_kings_blessing_ready.up|variable.extended_combustion_remains>gcd.remains+1.5*gcd.max*(buff.sun_kings_blessing.max_stack-buff.sun_kings_blessing.stack))
-spec:RegisterVariable( "extended_combustion_remains", function ()
-    local value = 0
-    if cooldown.combustion.remains < buff.combustion.remains then
-        value = buff.combustion.remains + buff.combustion.duration
-    end
-    if ( talent.sun_kings_blessing.enabled or runeforge.sun_kings_blessing.enabled ) and ( buff.sun_kings_blessing_ready.up or value > gcd.remains + 1.5 * gcd.max * ( buff.sun_kings_blessing.max_stack - buff.sun_kings_blessing.stack ) ) then
-        value = value + variable.skb_duration
-    end
-    return value
-end )
-
 -- # With Feel the Burn, Fire Blast use should be additionally constrained so that it is not be used unless Feel the Burn is about to expire or there are more than enough Fire Blasts to extend Feel the Burn to the end of Combustion.
 -- actions.combustion_phase+=/variable,use_off_gcd=1,use_while_casting=1,name=expected_fire_blasts,value=action.fire_blast.charges_fractional+(variable.extended_combustion_remains-buff.feel_the_burn.duration)%cooldown.fire_blast.duration,if=talent.feel_the_burn|conduit.infernal_cascade
 
@@ -1008,10 +995,10 @@ spec:RegisterVariable( "needed_fire_blasts", function ()
 end )
 
 -- # Use Shifting Power during Combustion when there are not enough Fire Blasts available to fully extend Feel the Burn and only when Rune of Power is on cooldown.
--- actions.combustion_phase+=/variable,use_off_gcd=1,use_while_casting=1,name=use_shifting_power,value=firestarter.remains<variable.extended_combustion_remains&((talent.feel_the_burn|conduit.infernal_cascade)&variable.expected_fire_blasts<variable.needed_fire_blasts)&(!talent.rune_of_power|cooldown.rune_of_power.remains>variable.extended_combustion_remains)|active_enemies>=variable.combustion_shifting_power,if=covenant.night_fae
+-- actions.combustion_phase+=/variable,use_off_gcd=1,use_while_casting=1,name=use_shifting_power,value=firestarter.remains<variable.extended_combustion_remains&(talent.feel_the_burn&variable.expected_fire_blasts<variable.needed_fire_blasts)|active_enemies>=variable.combustion_shifting_power,if=talent.shifting_power
 spec:RegisterVariable( "use_shifting_power", function ()
     if action.shifting_power.known then
-        return firestarter.remains < variable.extended_combustion_remains and ( ( talent.feel_the_burn.enabled or conduit.infernal_cascade.enabled ) and variable.expected_fire_blasts < variable.needed_fire_blasts ) and ( not talent.rune_of_power.enabled or cooldown.rune_of_power.remains > variable.extended_combustion_remains ) or active_enemies >= variable.combustion_shifting_power
+        return firestarter.remains < variable.extended_combustion_remains and ( ( talent.feel_the_burn.enabled or conduit.infernal_cascade.enabled ) and variable.expected_fire_blasts < variable.needed_fire_blasts ) and active_enemies >= variable.combustion_shifting_power
     end
     return 0
 end )
@@ -1047,42 +1034,12 @@ spec:RegisterVariable( "time_to_combustion", function ()
 
     -- # Delay Combustion until SKB is ready during Firestarter
     -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=(buff.sun_kings_blessing.max_stack-buff.sun_kings_blessing.stack)*(3*gcd.max),if=talent.sun_kings_blessing&firestarter.active&buff.sun_kings_blessing_ready.down
-    if talent.sun_kings_blessing.enabled and firestarter.active and buff.sun_kings_blessing_ready.down then
+    if talent.sun_kings_blessing.enabled and firestarter.active and buff.fury_of_the_sun_king.down then
         value = max( value, ( buff.sun_kings_blessing.max_stack - buff.sun_kings_blessing.stack ) * ( 3 * gcd.max ) )
     end
 
-    -- # Delay Combustion for Radiant Spark if it will come off cooldown soon.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.radiant_spark.remains,if=covenant.kyrian&cooldown.radiant_spark.remains-10<variable.time_to_combustion
-    if action.radiant_spark.known then
-        value = max( value, cooldown.radiant_spark.remains )
-    end
-
-    -- # Delay Combustion for Mirrors of Torment
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.mirrors_of_torment.remains,if=covenant.venthyr&cooldown.mirrors_of_torment.remains-25<variable.time_to_combustion
-    if action.mirrors_of_torment.known and cooldown.mirrors_of_torment.remains - 25 < value then
-        value = max( value, cooldown.mirrors_of_torment.remains )
-    end
-
-    -- # Delay Combustion for Deathborne.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.deathborne.remains+(buff.deathborne.duration-buff.combustion.duration)*runeforge.deaths_fathom,if=covenant.necrolord&cooldown.deathborne.remains-10<variable.time_to_combustion
-    if action.deathborne.known and cooldown.deathborne.remains - 10 < value then
-        value = max( value, cooldown.deathborne.remains + ( buff.deathborne.duration - buff.combustion.duration ) * ( runeforge.deaths_fathom.enabled and 1 or 0 ) )
-    end
-
-    -- # Delay Combustion for Death's Fathom stacks if there are at least two targets.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=buff.deathborne.remains-buff.combustion.duration,if=runeforge.deaths_fathom&buff.deathborne.up&active_enemies>=2
-    if runeforge.deaths_fathom.enabled and buff.deathborne.up and active_enemies > 1 then
-        value = max( value, buff.deathborne.remains - buff.combustion.duration )
-    end
-
-    -- # Delay Combustion for the Empyreal Ordnance buff if the player is using that trinket.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=variable.empyreal_ordnance_delay-(cooldown.empyreal_ordnance.duration-cooldown.empyreal_ordnance.remains)*!cooldown.empyreal_ordnance.ready,if=equipped.empyreal_ordnance
-    if equipped.empyreal_ordnance then
-        value = max( value, variable.empyreal_ordnance_delay - ( cooldown.empyreal_ordnance.duration - cooldown.empyreal_ordnance.remains ) * ( cooldown.empyreal_ordnance.ready and 0 or 1 ) )
-    end
-
     -- # Delay Combustion for Gladiators Badge, unless it would be delayed longer than 20 seconds.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.gladiators_badge_345228.remains,if=equipped.gladiators_badge&cooldown.gladiators_badge_345228.remains-20<variable.time_to_combustion
+     -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.gladiators_badge_345228.remains,if=equipped.gladiators_badge&cooldown.gladiators_badge_345228.remains-20<variable.time_to_combustion
     if equipped.gladiators_badge and cooldown.gladiators_badge.remains - 20 < value then
         value = max( value, cooldown.gladiators_badge.remains )
     end
@@ -1090,18 +1047,6 @@ spec:RegisterVariable( "time_to_combustion", function ()
     -- # Delay Combustion until Combustion expires if it's up.
     -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=buff.combustion.remains
     value = max( value, buff.combustion.remains )
-
-    -- # Delay Combustion until RoP expires if it's up.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=buff.rune_of_power.remains,if=talent.rune_of_power&buff.combustion.down
-    if talent.rune_of_power.enabled and buff.combustion.down then
-        value = max( value, buff.rune_of_power.remains )
-    end
-
-    -- # Delay Combustion for an extra Rune of Power if the Rune of Power would come off cooldown at least 5 seconds before Combustion would.
-    -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.rune_of_power.remains+buff.rune_of_power.duration,if=talent.rune_of_power&buff.combustion.down&cooldown.rune_of_power.remains+5<variable.time_to_combustion
-    if talent.rune_of_power.enabled and buff.combustion.down and cooldown.rune_of_power.remains + 5 < value then
-        value = max( value, cooldown.rune_of_power.remains + buff.rune_of_power.duration )
-    end
 
     -- # Delay Combustion if Disciplinary Command would not be ready for it yet.
     -- actions.combustion_timing+=/variable,use_off_gcd=1,use_while_casting=1,name=time_to_combustion,op=max,value=cooldown.buff_disciplinary_command.remains,if=runeforge.disciplinary_command&buff.disciplinary_command.down
@@ -1405,23 +1350,6 @@ spec:RegisterAbilities( {
         end,
     },
 
-    -- Talent: Teleports you back to where you last Blinked. Only usable within 8 sec of Blinking.
-    displacement = {
-        id = 389713,
-        cast = 0,
-        cooldown = 45,
-        gcd = "spell",
-        school = "arcane",
-
-        talent = "displacement",
-        startsCombat = false,
-        buff = "displacement_beacon",
-
-        handler = function ()
-            removeBuff( "displacement_beacon" )
-        end,
-    },
-
     -- Talent: Enemies in a cone in front of you take 595 Fire damage and are disoriented for 4 sec. Damage will cancel the effect. Always deals a critical strike and contributes to Hot Streak.
     dragons_breath = {
         id = 31661,
@@ -1570,7 +1498,7 @@ spec:RegisterAbilities( {
     -- Talent: Calls down a pillar of fire, burning all enemies within the area for 526 Fire damage and reducing their movement speed by 20% for 8 sec.
     flamestrike = {
         id = 2120,
-        cast = function () return ( buff.hot_streak.up or buff.firestorm.up or buff.hyperthermia.up ) and 0 or ( ( 4 - talent.improved_flamestrike.rank ) * haste ) end,
+        cast = function () return ( buff.hot_streak.up or buff.firestorm.up or buff.hyperthermia.up ) and 0 or ( ( 4 - talent.surging_blaze.rank - ( talent.surging_blaze.enabled and 0.5 or 0 ) ) * haste ) end,
         cooldown = 0,
         gcd = "spell",
         school = "fire",
@@ -1585,7 +1513,10 @@ spec:RegisterAbilities( {
             if not hardcast then
                 if buff.expanded_potential.up then removeBuff( "expanded_potential" )
                 else
-                    removeBuff( "hot_streak" )
+                    if buff.hot_streak.up then
+                        removeBuff( "hot_streak" )
+                        if talent.firemind.enabled then applyBuff( "firemind" ) end
+                    end
                     if legendary.sun_kings_blessing.enabled then
                         addStack( "sun_kings_blessing" )
                         if buff.sun_kings_blessing.stack == 8 then
@@ -1595,7 +1526,7 @@ spec:RegisterAbilities( {
                     end
                 end
             end
-
+            if buff.hyperthermia.up then applyBuff( "hot_streak" ) end
             applyDebuff( "target", "ignite" )
             applyDebuff( "target", "flamestrike" )
             removeBuff( "alexstraszas_fury" )
@@ -1640,13 +1571,14 @@ spec:RegisterAbilities( {
         spend = 0.03,
         spendType = "mana",
 
+        notalent = "greater_invisibility",
         toggle = "defensives",
         startsCombat = false,
 
         handler = function ()
             applyBuff( "preinvisibility" )
             applyBuff( "invisibility", 23 )
-            if conduit.incantation_of_swiftness.enabled then applyBuff( "incantation_of_swiftness" ) end
+            if talent.incantation_of_swiftness.enabled or conduit.incantation_of_swiftness.enabled then applyBuff( "incantation_of_swiftness" ) end
         end,
     },
 
@@ -1654,7 +1586,7 @@ spec:RegisterAbilities( {
     living_bomb = {
         id = 44457,
         cast = 0,
-        cooldown = 12,
+        cooldown = 30,
         gcd = "spell",
         school = "fire",
 
@@ -1685,6 +1617,27 @@ spec:RegisterAbilities( {
 
         handler = function ()
             applyDebuff( "target", "mass_polymorph" )
+        end,
+    },
+
+    -- Talent: Calls down a meteor which lands at the target location after 3 sec, dealing 2,657 Fire damage, split evenly between all targets within 8 yards, and burns the ground, dealing 675 Fire damage over 8.5 sec to all enemies in the area.
+    meteor = {
+        id = 153561,
+        cast = 0,
+        cooldown = 45,
+        gcd = "spell",
+        school = "fire",
+
+        spend = 0.01,
+        spendType = "mana",
+
+        talent = "meteor",
+        startsCombat = false,
+
+        flightTime = 1,
+
+        impact = function ()
+            applyDebuff( "target", "meteor_burn" )
         end,
     },
 
@@ -1736,6 +1689,14 @@ spec:RegisterAbilities( {
             applyDebuff( "target", "ignite" )
             if active_dot.ignite < active_enemies then active_dot.ignite = active_enemies end
 
+            if talent.feel_the_burn.enabled then
+                addStack( "feel_the_burn" )
+            end
+
+            if talent.from_the_ashes.enabled then
+                applyBuff( "from_the_ashes", nil, ( talent.call_of_the_sun_king.enabled and 3 or 2 ) - cooldown.phoenix_flames.charges - 1 )
+            end
+
             if set_bonus.tier30_4pc > 0 and debuff.charring_embers.up then
                 if buff.calefaction.stack == 19 then
                     removeBuff( "calefaction" )
@@ -1774,7 +1735,7 @@ spec:RegisterAbilities( {
     -- Talent: Hurls an immense fiery boulder that causes 1,311 Fire damage. Pyroblast's initial damage is increased by 5% when the target is above 70% health or below 30% health.
     pyroblast = {
         id = 11366,
-        cast = function () return ( buff.hot_streak.up or buff.firestorm.up or buff.hyperthermia.up ) and 0 or ( 4.5 * ( talent.tempered_flames.enabled and 0.7 or 1 ) * haste ) end,
+        cast = function () return ( buff.hot_streak.up or buff.firestorm.up or buff.hyperthermia.up ) and 0 or ( ( 4.5 - ( talent.surging_blaze.enabled and 0.5 or 0 ) ) * ( talent.tempered_flames.enabled and 0.7 or 1 ) * haste ) end,
         cooldown = 0,
         gcd = "spell",
         school = "fire",
@@ -1795,7 +1756,6 @@ spec:RegisterAbilities( {
 
         handler = function ()
             if hardcast then
-                removeStack( "pyroclasm" )
                 if buff.sun_kings_blessing_ready.up then
                     applyBuff( "combustion", 6 )
                     -- removeBuff( "sun_kings_blessing_ready" )
@@ -1807,6 +1767,7 @@ spec:RegisterAbilities( {
                     if buff.expanded_potential.up then removeBuff( "expanded_potential" )
                     else
                         removeBuff( "hot_streak" )
+                        if talent.firemind.enabled then applyBuff( "firemind" ) end
                         if legendary.sun_kings_blessing.enabled then
                             addStack( "sun_kings_blessing" )
                             if buff.sun_kings_blessing.stack == 12 then
@@ -1816,7 +1777,9 @@ spec:RegisterAbilities( {
                         end
                     end
                 end
+
             end
+            if buff.hyperthermia.up then applyBuff( "hot_streak" ) end
             removeBuff( "molten_skyfall_ready" )
 
             if talent.firefall.enabled then
@@ -1875,23 +1838,6 @@ spec:RegisterAbilities( {
         debuff = "dispellable_curse",
         handler = function ()
             removeDebuff( "player", "dispellable_curse" )
-        end,
-    },
-
-    -- Talent: Places a Rune of Power on the ground for 12 sec which increases your spell damage by 40% while you stand within 8 yds. Casting Combustion will also create a Rune of Power at your location.
-    rune_of_power = {
-        id = 116011,
-        cast = 1.5,
-        cooldown = 45,
-        gcd = "spell",
-        school = "arcane",
-
-        talent = "rune_of_power",
-        startsCombat = false,
-        nobuff = "rune_of_power",
-
-        handler = function ()
-            applyBuff( "rune_of_power" )
         end,
     },
 
@@ -2038,4 +1984,4 @@ spec:RegisterSetting( "check_explosion_range", true, {
 } )
 
 
-spec:RegisterPack( "Fire", 20230702, [[Hekili:S3xAZnUX1I(Br3uww0sdTwgnZK8K0RC8e7m(EFoUIM71FtKqGGIidiadwKSsPI)2FNLUB0DJUBakr6RDQPQutSia6LtF236Bo5MpEZ1ZIQtU5hp94tp743E8PJp9KZp)1V7MRRFCvYnxVkk(tr3b)h5rlH)97slPF8XSIOz4hxv0ugd)0I66vv)PV(RVlTErZTJJlw(1vPlBYIQtlYJlJMxJ)D8xFZ132KMv)H8BU19m)2BUoQPErr5nxFD6YVfg50zZs4xpPk(MRXx)vh)2xD8P)P1txp9)Ukz90zj32mF(4ky8MnUz16PZlkxp9JjlxvugLTE6phvUA86Fy9pWF85V643XF8kCjujE)toE8jhTEAAECwZS087wpDzu(JRNEFuzA0Tz47vTiDomhWhuwSC90vLPfLP1W7uxGFyDszooFXfZs0MVZE1PhtZ3)VIzPZFu)7Oj()4d5v1r51V6VLNb)2pVijhF37H1W)bmNj11W)L549wA8(7jllUh2)xhxugVy90Rwp9NESS42SOQ61txevolM(VQItYHnrH2y8Aja8VNCFAL3Xa3xXlsI)06P)1c4VVUUmj6tJV56S0Q6kedOSy1KvlIQsG)4hjekyUaO1SB(Z3CDmSltaOhCOgxNEFYKK8KLPiK8QlBbSJxuupPIg5jZZaen4)o9tWAA)1tpy9u6ST9vgd)tmSuE6P2NohWlRQlkxQ)q(7a04Y6fjLltJKpCe8)4vur(nxRnJ3udOJE3c04nljQEXTfL5jeIgSclBYtGJX7s4Nvnzo8Vflhlgd6Du7060LjtQlMaei32uHlG1tVqSu1g6YKLrP5v036cYDQ2Yh263gLLHR9ZEMGFarzcIP0b6ZKvn5t(eGbwnbjcQG)RjaGC2Jsaq4xsTvaelAoqqWa(UKFzvAjX(yYSKSOhNOgiyPFS3JVxh(47327LvscpCNCU3DYZeR3Z88MWqmBcppJYBTgLMQKjpSinlHqSaqbYCqBS3td)d3htOrAYQIImI1BVW0zfpK7K(4IbHzdZpd(IkHv0yEqKCC2tcgbksCgBwjbI7R9WoCK4hUQm5(jfZNp5U4zABn5yZqpThmogwL3POSvm2QJYsYRhd)7Vattu1)kcyT0u(ObJLyaEHqIXZkJURihGsLixKXemI40HJwvcaqG9rDrt8c1ELzdIhuIvlDePZxHxGSK3Y0v8dijUf5W)GAdSE6FM3DWuGcVsHdL)EXpb)hZxp9XIgq4Cr(xssJW5mjfXkbHjmKffbddwPH0f47sG)ikFM89bbvhensogllWPTEremv1pacOIYOTli7(GBvV130c3(sa2(DaKd4vZGfuQgSVpIN6dIHp6AgebAnGWiy5xjXSgVE675TWScCAXNqy2SewMta9PFxlowfp0pqIYVUb(N)t4vWfYFwGgZtbJlJeqVB7ta5hhFGKwhi)FAiTOSgGHwsCtTCE8(cjTm6aQYJhFoJoUh9jTYnB5JPqTXxtqayWlt9cJui3IPwXnY7IZ(n25RUrTW6UCsgPi0DtDQR7Jh2qI9vfP5M(2wSncYMY)i7Dy5putzTQvjzzvtsZb2RP3TOwTXFUSvm5Oi4vmRHPmJ4NJ4xFTMkQSkUmLMbBLwsyMyuooItF4BGjWMYNOf)Jw0IYfFmm1t4)ycQamRg8e22iHCigVOchMto2Z40k50egWpVASsN6dV8R5JHJsNFPl8K9fOHPlxvcMcmBc)67lSiY6NLkWCXzFfkCAz0V0rCpU0IHL2snecnvDK6QQ)ATQQ64fr6iara4l9aWcs)LpOlPwxosoP5c9AJ00cYXI8IUSQ0w0hASf(khddt6shU(T1H0aabWNiiIcXhy)amaIcPAJtBM8OD2j(TQzVbQPbFCPM(vlksYt)Lw5nSEg1tUTiVPcSZjP8SJNC6Qy6JfOJOMo0onz5TjLvghlNsaCbAPK35bpNpvD(ZWfERG63RRbSy5ZVcbI8B80VfHp(3KdIpTHaetGXyZxB7EeGpOvF31tpPVtf)2Z5IQPDOycpAi8BiLn91vgwwBQsnnu(TvQZqPBGDuzCeWgemdmROIS5FFY5srJxHSac(UtW3RDrz)yAzzB8LsyRoJbdjn)mj6ljVO5Ufida4aPUcD(vTqUjCygH6YtoaIKW(D6wqfvH6wMLHYNbCGAqVrqi78wj0JhmWXPnA02YwL4ouK1jlbTVaXBcmxD6X90XabH2XjWInc(OqwXEcj5xxxfY1kAlc81UwtR6jTk0u5YdyUvJ38SGnMO1mcX0YATO005i0AV87bTnT0ZbpIImSGAp36BTPgp4x)XHOX)vm)a1F3NU6b1w(WE4NDjXkHxzkBIjV1IJJu5dY4phSGAzxLKKnb06CYTnL5bfpf2vHda(Uf2OcQaZfTonqp7Pohp9a5us5ClhdhH(evCLlb9phZf(aWRjVOwJSjk)rW4887oIST3YwcKgbySC3DjM(Ayp0vgKFlqExaKcTWh)mawXCczGmcqjhs8qrtg6xc0JEW7DlQ5AI4J((V99ip1zcJ)XH8AbGeOJriPG569rPzeUbZozwY8OMSAxSpKWH4Igm6ce(GfK4VWeE4IcyoGE3G0ELwrWNx0Dsnru18FDAvC6kadnQ8r0d1GKNzs8jx47Yfh5u7hIkxzTY(iUeQsaUwWI7J0QcJedVEAQAa2gpIGq8acoYGxkD5YKzPr1j4dq5KRAq(GSHAMXZbgzYDmr1Suly9sEDz(8w8y2Ruak6rsh3eJonQcEvCnxHto8NePfoJpuuIyo4b3Sc6udNJhsX1aHSbS9Hdk2lxrZMLI7tCb1U5oOAeoxLOG1IMAX5qsU4aC86PFJ67YEuiXTAbJvfL9q0JIvfdqIAhbHaw6VMZmdktUdeEI2aXp7B1IQWTj0gqq6IBjLSDNycAIurGmDEARGBN4SHK8uyVwvKH)4eAHz4xf6lUnROywgS0gdgHhXlWrHJybB6vbjVO9JUQNyPCOycB)n1hRjYNgvxrlq(g3LfHOHa6WKBJMHX)SDHfC(VskJBslo4Rwp9CywMppjw6RGoJVd)9lxlWbYJWPy2KIYz5r5XdFXCHUAwDggoue0rBFBP(heEpYBUUlyhrzqPN(IiakbyofL3I(jaD0gGhAfUJHVnBFWeWmCtB7f(wVloAWHxtVeDSknFKcmrt(NnPRwbufOGwqOfmTvP3LMzjx16Pto7nV90xFIH4XxFmjqKbL(Gooc4Ic1TmD5KK4S0vvBgMY7Egqh560ysD4mB5IBzbiTnfueQmTA5gT6o)fS6mN1a(37UShxTaHZrvvPltZe8nCRxh8BlNasEr1wKwFkPUDnmHCi4YO4iWmZjvlsavRw2uLgVzqh1w1Xa5YzvD0LQHJjbyhbymxzrkkTj)vKIu4g9OwHt0V9EuUYCsfO)hq8dQ3eiTRkDwITKiqI3Fd9J7dPuaxeP(q6)krnNoglwGVU4SE0stjOIuslch7O7sqj6uKBqbQG9YW)vX9Owy0x3kvXuUkSI)iPSaiHNnfUAjzo29rznjcDjX3ULfpoaU2gKtPfQsivajlwKwm4YkosaIfkfLJmoHTCSWSUQQgwzoPAoSYiTkia2)IYvK6lP40SE6pwuR(sHNUDfhknJ(xva)YTzITy1J5XQ4DXF))5Fw)qPQRcisugqv78pLuxnwIxotcCMCpbBgorLKjl7p785uk2GgthhnlzmyfoMBkx675GjgteVJiOiO2OnP1DFvdpn7sEc8)On3(7shx3NO4qAB9fy(8CGdnqoetUj78EPZrIl)eBWN4Aql11t)WD54jxRwRTiJKAXa2cQraJ4nRiPIOaP1naXtKitfCWD6GXiyx0(lCCxj1VvwWH0KGjM4C(b0Ole4KIEib1xNSgikxFHvY6lhnNw4uwD5E(viSvWEBskVvTugrrJjI9hchN8aiBP(HYOvvMMu3hY9inLiggQPBeDP2426P06sylfvSp(T0uX(Xto71)X3D(Bnuv5Cd8jdiMlhQRSLf1jmBcUsTyd0payFP5TxOuj4fYyGT0yI9PotIyynRe5ZImqK4dmw9heZdWNKNi98aG4FJEovOz6yNE42u0mGYu1smjOdUnby8GJMUesj54)OPQwh33JCz22s0uyKXpqEQq9HJ34YMACbn5F2eLx3SeuZ)(utlpuis22YyWW2LgZHzXPRmpZXvqYyXF06zyIuzGogyx4kOagUmh1D72O66SnyhpmvdThExbvqUuEi6tW5mmjZlb6IT9kXA0dfgb0b)LnX00ml9(08Kj3s(HA7UI8nnUcfGIPtto5BHjWiuV4rtVCVnwuDNavycCTCIJG5aoENdQwYmCW4zmpPJNn8(MtEnrPOMFVJi6qoB7jgQsvTRyKgcFofTTt95(rahbZZHI7JCM1gLKQ1)i841MEA97bPIiZXpeNgB5VPwLNUJEPjP870X)1Em6UpfL6OeuVAxDXaDJGmsh8pWrcWNRrd432Vpr6BV3R53vIf9sYkgC3dmXxHo0oN1XwF5I6Lxbw26bQgYzUemujQNK)581B97pDs46DMWbKS9OzVaVSmlB7747W2WlHOw3wKvRNMgxnOfFR5Dd5K)C5jPFps(VnWwte4)3byZ7gHDrMjjuRjrHd79P(ZnGT9rvR7MCK23op6iy5w)KB3FUmYIPpIoqaB)zrX2gy3pDXoa4(Re4KLHIWtBT(kwHP0IwIjihDlXg)eSk58VGRojTWCwX)ERBCOQlsZvC4GM1KO5qXKFPojFwYmTL(q9UkbwLCosTZMDuFf6zOTqh2p8VLlKvSNN3KLblPznX8l(vAdK5RoHdgR9W2g3QLPLLfS2uchPR7FOxXzJK5mSSa9VcVNavarP50lexCpC2bda8)bQfws)OUVbCmxTW1l7pKdW)7R1gonaCloiVIVW9RH7mvAoCOUHt3JoqQitpZvg2K5YOo1Z7DagHEN6lKPVqF0ogU2QB(baFUWK9UPxHNKUbj6STWzdCX(X(9VYq4f0VML6Sh1MaNuJEgeDFSeitL1)AQY9qqJ)KTYRw40dmLDRZtwIU0Ma9LdPmLgg76lDp9kST(qXUYfVlbVgb5oFS07H7vDIkLU)22rUjMnJBtYOonWEWIGlWBjpIuaFhVshgQUJAxWZo(t6w4kActn(uc)12KC3jExxHRk5UUTD2t2BT1pwDXIJevhm5W7h9fWoptpHRS0M4BMXUlKSdvUPL(BmUiVUSiRYkxQeHwJIrevQvMQGiQnk)fuvWWrnUhE7yoJ43RhHCyGxvvKop0Gs315UIUwXN2t1niC8Fpw3yO7QZ0SCWk6ONpf6VjbUcg7xUyZfrI1ifFXG50Q74rYd7wnpvGVGkDYN2uQqfhTAfFe7xmL1zPjStViDDDk3hF6Jned2w56iuY2do7w(hHrn8lB1lBIDQ0gFm7fm6VAdehmYurhpeqxmu2BVAdmB4GnGGYCv2jDy18hqp7KbVFTu4DBYLojVQbFskYEULQf)POmmIPiMjECtKU)9gS2EXGfrPS6qyiB7ZSTqTR2lPSsg4MQgeZ01L(f9XowQqBOQMuBQcxMPUStwua4pN8HM5J)xfT8dBU5hzlKUBS7reL7WicfHPnIwksxjsQgctICxqNCWHcK5zbdK57ffF531c37SOimsE1W5nffyvCELLUPrAf990QLZIwyP8OXaeA7WrJfrhRmYUxey8aSuu5reRNI1MvnB6WWQvLCjWqP8BbkImnVMRGg8d7K0seI0gii0L4op4W9s6yifuBqmQLf8e12NFdOyw(M7PChtiQ3INKI3Jqhr4VZZtyAERmL3nkFlqXnxFZIv2LaJl8jWOon(tTcmOTV)Q9QxqCV2h76qDGMVJ9kOziVTYIAvQfEg5AdLwGC1VPT4Pcna9vamLrTLAG8de(xhZsNSSeS(O0)uVz(VVSKzp3(QWmdQcKkkkZNLL4IgMUHomgIrKOXgUsZzc9u3nZZBvGU3esoq((oGe3916WD2nHtsxsnzldy(56V3CqHQfuF0Y6TEJ(BPvx5wN8AhcsDrQ6GeiYlEhh9Y3GdfownNwVvp5XVHdZ0gUKYQKYpjuJWaWGNN0SfcQGjsewrUyA9yxMEb6RnhOWR8uTdiMvRE0EEjT8cp5xwe5y7rmhO6IPoq(A3Pud6TsbSDvNi9jktNL0qkuChJXkNIopPUBkqlqBxvKMroTgyldQxw2uPrz44H1osQzEOQl4eDPb7TzWJegK2cCC)8AhjRSyabOjwkUXyrEHTzHICtqT9dRDKpJ8qHYOwIX9aGQmL6Djl1mUZ5JRDKsB8WTOOmh3kGPyfA7qZFMidzP0QEeXM1X0KUopKto6tWKYqKmmbBUBYTWJ3OOA1jpR0gixskgOmZaEyxpJdbA97XQzu5zwJqUKuNuO7hXbe)QH4LgnBL3i71fEROVJeH6iIvVz(QSHL7GsQcnwHKYzvB7UkoCNnqjw1zDV7G(1J0EMXxpcteECSjN6rJUpRngA1m7Qm16Txm4LiXVfEJm(wZYMv6zCLtvp5Cnp4PREI6WYa7YtLQRe75KI53E71E2n(qViEFDvBDZy)970ggz3XZL(A9RcvypsO)qN(qZOg9B5FoiumXWy1Mq0RHEtrcgBREAiJ(2wA9qh5YVnWq4Fnr2EtXiGEVOeT9f5iziZk079a6TTkpl(GzjSZgRXhlFu68HArfZSQSiUc9NoNg2u3XJ87CfNC46CtL)oZNv6u9xyZ0OvavFT)YbeBJ2e1WsyODsLzMRsHN(NtKtckx95o)9cO6PvEg0UJpFemK5)LEe4Ms2FMF4Nnu4omKXW3t2t8I6QA7(q7S7AuAUHwdlw9goCXV)67lscHrM0nE6a74e)5ED5gT6yevVjSqqj3JmCOYNBxMsfn8fVhz8uOqkivTgokf6wFKSIPBSAfokDl0IyIi4h04zgkquvfRCiv0Y9)nsN6CJBXMul4pnz2rC0hUtAmQr)hMSbLdKHexfFp1wPYqHSqT7XHkwrHjTHT7rxUlZGV5GuWVVOEQZLDx3ydvwMU5FQsE2M14h9Ba3V7aE(HadIDKbFYFl3vi9xAXBwd61VXP20I4QkG)nc1LjhCJQ8ZDxYp3DjnJv3aUyvyIqFbsMOyRM8pAMPI8tp(RY7qDB0DuKmltJ)uvyhw5I4PvOyGfRrOecMpjIMeHkyMRfzdvxxn3TxYiFhwdj73e7CeWkQHkIFTVIXtP8cHuys82EBV)OBFEMz4HEipAtzTpD7e7CK2o6aNESVe9VnQVbCRL7gAHTUocxYnrOv3HSZ6gFQZF9mJFvKGt7VUVSXvfAn3RihUzrUhYtAWy1w9yo8Iio4cmkXLdosuai)nQP33G5WHcptrq(kSD)mx)W8UbGbpzps1xjeD4WfeAOSdvstTqN706X9r3ZUOON6rXS6vcYhwdv0IrSTZagW6AqosBGUB6k7TXoW5tDSszO7rx(nYNhB03i(whBMyKNboWERvnXfLOXYe6JKtBxbGHvc)LVYCQS1MMZQ91vEp2Rao6bdj63k7fgAf1QuO2BLVg8ne1rRGEP3qCpG6JTmrETd5yV4PppGlrHTeMVHDRlsvZL5jXLfzfLIpwTUCDbQ1camV42CoWQI50yydvkNQHripZPxGC9Se3r1xxInI(ASp0Kz6WZKUF6lyE85Lrpp(fmtDtAA7nvpzvD)ZwaFSPNbfgsADPZOM2Is3OPj3LmUjBj1ouMNMNwTizM7U8KCYnlKnZ53kt8xB3vZsTtfdTM8RqJGB5wqm1Rq6O17m6w8kLB(HubcujVDT0hwM5oAQMQVtXx)LIRGl(BFOf(WpfFMvhdC9uSV1v2v5dpjjR6ynyzQ7tjzNML3hBETCo1BBvxtixWov2acoH0L56Ea603n51w9tDhSGAtsOWkS0(EHiRh5u6LqYWEVG8My)ECqwqXQYU5Cx)UZLZJrdSxKgcSDqpdpQ)ZYYuRB((ZvFtpUsx0Qrx2KJEagXOQeMlYV13jbDTeOJD62N(qr)3tCpE1OYRA3g(PIvJs4S73BYzhF8jV(uP(io8Vy4nOHgcACHwLeZ9DtToNGHzo5jjZSFbfCYJEQg(hDyS8UWBFn00dbUFhrb5DHQJy7(18Ug9xxCYw3IAxG4YMVfpe9EoV)MEghKd2bVmMyddgrrv934S8C5p3(43me5HFMxZ)(ZRXebWbJgZxWnxMW3gnFMftaa0Vx4VS5U086vuvLAwLMDR5Z1ulRDrkguj5vOVHTehecSeT5UNupTtE2NSp3P(vBPCZPnYtUm)eRUOCaATkQ8t2MFYpdosWh6p0krwzpHGArCjlV28s9r0cUjTRzBMf2jxPA7(IkYnQUPKVHGQWuPfjZSNja9gxFuUQuZ9VFQoQfSEqlNn3ebD7TGq(02eARlEKFYNbCXDDkf(n)(c(zII5XzVDAMRXdiLh7ct8n6(Dy7ME9NAtD4XFootO5bTu9xQNg9kf7oBBQJYs2nBjevNpYsSYmkY(VFItGbrqU1upq5ph2XkXPrzsF2OUESy31GZY3u8xg7mmwUKag0A(OwxfAh8T9nYIqpz8)f(EdJMoNg3Pazqd31vFoUhddew4WVA4vkKL1rDAVfUyRnhRNxLJXW0qlTIXb68XmVk5Tb3m9KYd5U1LFZ2lQvE7IRA(k1rKT6VJR497FgIXOdx)PgZwgK8IxUdy(gAaaTbcVWYcy4abF4fT2d9CWkC81(OsRd2Of3Y72DESB70yevVLzAP5kdOi(aF8SJjvyoYwqqLVcJexuCVd5Bfjx36P)fk768Ovm1swWHSTqnffDKzpkbzfFJrMP5jZdnQZ2l6kkrb48lyVp9HUqMjiB3ujKfN4tDxFzf8pjdNUtaN7OTiTfbfdiTgrgtKoh00r01Caa7qn8CJYVtP8dNF4a1ZInSnStG6Z61oSLA1O9zI4W3EKEZ(7q0M2TOMohwknyC22H(4F79)T)06PFOsf6RienPMSRHV6JkyITz0BuL8)Dq0CoBiuWED85YJHbtvUbAE1P7a63(OEWb7lvi1t3JoDBVbDWrfEqisRUeP4rXIKSv91mOC0iQ4IAxExPYfMa6YnzOqPGawLuEpgIxZii69mEVHCU8Rp)xn67YILe9BezsUbb(aDxO4UgJoMhEBHXpYL2FHAWP6JPkR4u50tNoq2goDEWv9LTK6PRAxltuHuNIkOkxOP9rwY86U4QKBmICGHJ)UebNqOPG8N76wDsE5xRLaGjzvjb97HtNW6s)zmf4Rd2xSgWq3c)sJtKTdFkVNVhK5Jp4hp94tp74Zp(D4LuuzoQjN4UKofBepsh(8LAyFuEs)LOr4)ZMu6AHJVyRIAQlwgrfVdxTpvJx)d)xPOrCNCYFcbCulOaF(x6jV1(sgM77Xsse41o4KFzu7WFM1WhoNUKZYWY8RENmx5YLCkcLNx9oWEYMRUlFNj7vNH)C3RBdTiSw3o1aP3b2xmZTpD9ft9otWB21tWB3vGM359iv53XUhNDC(CVdRd)sBTCD5YA7H9upy2DeFAn2EfV2zc(J7i48zhVJx5ND6)lnbM6iydBCQar7qV(hCWjx1jM3mw42RpnMNyYEc7o4FlCGnB8yFBFpeGBnW7UHoC3qg(7P16j2eEHABcDx1(7zc9orIfP)zX7l4Dk2104(0Cy7nbEoKTkUoRH3tP31dBKzjZJAYQ3mMi2QbUl1tZZPPrdM0bKOtZNSdq2NUSBnTr8dL2Y0u2t0oGMYAkkwLWofUInj7l3tzOBANloZ9pGmXXDk1DP7NP6b(p90E9b4F6jxUKJ7BU7V3bdbK(0t9csgPnnDRhLR8FhJ)fFXbS1BQ6j8WtoE0i5zXNHC(HCUbC(50V1jHT50VTNGt9ZJyByR4Pb02B7ZO(xtR39zJZl269tF9VM7cBtU3Pt2B6Hh(q8v5fbOK3pYxksO5F(dpiWiCOyecEVK8vTfUspxijhEWaUedF1jJAhrhxDHFLDLU9vhmGQC7IldSnhn6lcDT)9QtUW1J1YtKdvdURlMWWd(b2(Bu(KGF2OV4loz)aBPlmyClru)mg1VAyuF9UeJk8G7fJk4NnAJqOA5I53S6TRw1DMOTVw1D8J2oBV4XHDBX9Ipx39Ifi3XJA7kGKpx3TnbsEMIxaqYPr9Q7SKVCJmR3NVltvTrsR1M2tg4kt7l0zWSDwNpF3p7CTkILhpcBNL4l4GE3oU7AxA5z8FHE0IhBBn232RDpJ)lCT7eLRt)EFZW621NIEc94lg7ZoWGBRX9xlDf29Qk4xtHxsWe8OwWlmyc)EAT6Z3PBnsMDF0i(vmybAwVP6nABghkpu6VyV5BpUTiwohApp2fy4deeah03jtS71tX2tgUPWl4PK4B(X3CgwcpfZtZujev1yLwyhE5xBFxXT(hC9wyrPGEb(iSZNDP(TV2rPZVCVqoR17fd3(hSNaqQP7LMhz11itZGYbTaDFHTrRvFx2BUhx9R0n3Vr7L5M7NRYsz8m7pSE6FHtDw4ylbqkWemL7ilisn89i6m14zK5Q4y1WEzmAKEsjL(F0EjS)2OPJiwQsq))c)bnv)mGqXtIQUKUnr0tmMzvHF01yrdwwmC5b(rbwPCuWlCwUxnIPXgmXukUnFEB14c7ZOYS0KY)pRf9UgQqPOCAlLEDkD2PezmJ68gLuDgoh7QgPyoVHZH2f7jGv0KjY4UOzZszNTOV5oOAeoxLyw6X3HNuH)KlGFJxp9BuFhDHJIRDzoIhL9q0Jv65kEu7imJtrVAU8ePuVSm5oqViukPD67Tw2gUf1qPEh9XXXlGRqEBaP3XtxxCz2x6MNkKl24Mvp9K)OuCb9M09UxwJUdo0Ns(AceNpoj1lmCuYvH8GLpVROp8k6sT7bVlTVg8WzpuGyKOsV6CNdnnMau6raoNbK8ZYX(6ypdQMxR68PCbLeYjqx13hhAPgG7uipgQTI1yZk6wvukVE4Pp9KjgqipZTFNZpaedmL9XG8PNuEnZ6jto7nV90xFI0HGx96Jh5F3Fxz6YjjXzPRQ6)m6DBWgY)uUSOiplfVHcsRw27CE(wzoVl7XvlWt3Ok(6pwsMfkSQb2crXr3wIvgAss9KLnvPX9Vribay6l3ur8HIWIPoPKkyII8xX1ZnofTC9OF79sj1RN()KW3HRaBuxzOmWkL6DVpKwLCKQYzs)xjQ50Xy1Th(YLflYFSZvRmYSuO8JO6aIuxh6IM0eYPoJ6sBOlIfFDBhTWKHTQW0brhvmizjDDurx9(Swy0B3k)chaxBdQwdeYOKs2YIBYeZ7TaHPaelK2MJmkGTCmpnaMrdl6xk)KLY1k5b0eg5AkfeRO)wp9hlQvFP4(uWvLZQ1MULx)u8Cx9yESCvl(EZU7wvxjBsuM6Y08pLqQz6dD1wxV(q83v5tWlipccK)ap)8g4loWiJbic0Rb9oaYuwDAF1QwKSAKOt8zfjCLiqt1CUL9rNIf1ujS19OAQOhBl)fCqekub)0D3LWLRaiBISx6dF77zCUuSuhrnWi97mBzHLSgqIUaru(J(M)ayk22sCqpDXfPqg4qpa(0iqoMFCc34tOYu2IeBwnsxIOnATMir7hn5Sx)hF35Vvjt8C(W(JsyT1PEcF94ZhIFqS0a6rETXvncZWH4tG9uFHKFdyBmQbs2eCBydELIF8bw2hXKV4CFqNbrjYcCGtJQwmv1nsto3TjD1ho5wYxlILhPnSQ4SP8Ra(UHWRayECzdFze)pBIYRBwcAMDFkRyO6e1wv097gZquROqK7TcHz(kcmrnEeg)(LHuoIRhfqRbW2X6SEwQppnjEi6tyXZHbQgWe2fZaa6RlBIPXzgwwvjtUvyX62EQaEZ8TyEewHupwvVtMK4ioW3ZXsoKW8XkQDEIYQjVVXKxZTYmhJDvFYejIj(6zQK0U5hlUpsOGIKlY3tjBfqZXzBL(8qTdAQKSWjQvsNr(z5XgGHymwqzGx0RPk6vqmZA87tK2z)EnNzq0)K3mOAJeBDqyzXLZQLOPjoPKtvbQtQodrlxMe2Jj7p0UInd3C2gUzhQXaY98(AGKLGGzz6HqNI3wKP1PgUAalsP2VHpKo3GtK91fZVRax6Ot)6a72Fpxb8zuhsqCbSTaLS9OQDtaWk3m4FPq1DbCRleYbtQNpikm22wbSSDbg)bS9dvKTMUNKwskrBv)6ggVn3(g8tdAkNQJAA7TFxEc9xgTeu43yTnsTBVNhrwbR5ASpNEC740J7FZt4stJtmVmDyKqnmlQQb71Twh7YmTxM2iTSw0g0o45E(y9TOHSaL6HXw6xr)OzEcWSK4tK2iotD)bX2TB3cCuyUux6AAehIbnOPlXRGStqnGFsypGyGcGwq)c80cRmSSXfOzTLZldobWQ7iPAjvEFdgOkaBoESgFcBpehasJVQ9LDmZ1)BMXM9sQ8k3vs7MbR0RllYQS6aHchFsEWlcVOrT7G9P4qyE1QU24gznGZc3nYsCDHj6q(qxuSRo7ReDzctlL6ot7)SrV03XMYq8s8EGxzBiNPaRsGoqXMXexP1LwovPuOQIDl(C)bl9Jq3(zY7rcVYBCbnA26sosIA1QpIQfkfuveg3II3QOBmnUFU)QIfxbVnbnGQyopfcX954Tb5vsEvd1Yxq6Qwaa1HOYq)HAE3k3KNO1kj3nusVi2O(4QrC0UAa88gTFyS3lgcn9RgKADhmym721uNwlUWwPGR5E3tgS57LnKlQxFc71Oj)RIBLABkZJSzV7Ubd6Rxyr(mHqLjL47eBntVfP2ndanTp4qqIZ93mb67Vxx5N(yiYQpz39SucB0AfQwx7uxC84ZF6PUMOC1LNYYQLxq7Fx7APZPdXBGpw4i(sE0hpaC255(E6yJZ)K62RV9(px5WaiUsA0YlgeR4Hi(YnNo7zr9DVaC4zZSzsIAhr(DNNBeQWnTs6d7evwcq3p3D9u4sZSeVYwDCupag9wDaqdo6ko3cvJW0(lpjl1v3G2p5Gdca3mYuxof73L33fU)K604p1Y7RFyANmXUVSN5yV2B46mWqJiUnL9dcEvmauXOkL7QACSPu3M(hrcxX0DeWBzkX1t)VxjI4TbU8EQ5ASheLbDseKvKpofAcRCD)6DL2nNaBcsHZ7Gers0yZY5WanRVlprtpqxxigkgrxDIqSTZ(W5fNkvpEKkppi(aQtiq3nQRXDu3B7kRWiyCO0x2yWs5A5YWSrKDnB5nul9rFpgfzq2tfJKGdzNwWUNSHB4OeTYQ6dz4zDwjZrv9ZG9dCSyG5e8GgSl2vVL8PNc3bDVQ9GFesBkbyc5Q86T6sTgAOKFLMu3tEbr(zS2qpqhDQh0tRfkCGUmPoPO8544hjirRfB(0tAELJgy1AmOllDB7LsP6EvQdSuzaovrSIAdI2gKQzitysK(30Mc(T9iAwTa77sAUVNsa8JWSyk6UICYM)sSRz5tLYHYbFCGd1z0Cb2sqZeE46Rac8eZD3SUhjEBtIp0ToKpdo58rMAmkGSQJ3AZ6l43KBaFl12fRMRiLOsvxY5UB4xc2xCaZX1D)VkW2jPeTj0LkBnR6Dai5R4817BIjUccuXSkbuQ4h(dYCxpA2SICoLNeOZP53xG(TaTRHttgCLvDKwk3XQ4Ukl6rXnTQKoqKV7XlkkQsSKccF0skN7Q4edFmVk6zHZRMjYfJwU3W2SMMpVrgovccA(ZsJbFjtK0CDKzuvZYLAEVQ7Jm1YZ3Kr8FKzI(bUsf9NEYtTQi0jk5xwenCeLMHKN4dFu48qPmDwsdzp3Dyez2WpVAvrAgfrhWGHAqwCt1goc1fCY80KxXjI0kd7mg4GaNeilOyuvoK90aiXnhb0(OLyy8a4iN753bi6B2ySOOmh3k3dZFPhorKF8UKuCQAY)Oz2DYSApODgDgbKVteHWcuMXFYR1IbhHNJ2pKewrAsQGespg67(YYv6S1EPmR)MyUtYCGm)Q4i1DleXLsDpCf4UWzCWnFVbAtT7CbBL6u16eoTRHzBfwo94GRelKiNz0jUgWBzQXNOPZ(H0VCANF5mTF5Qlp1FGMVCtwy5j4Tt2KQhZH1dIMSafh1NgPx9MWZH7Jbt9muMUzR4gE8CK2LrUwpaxAIfnsc9ZsRdJsO58lVEFjuqqBdvQfPKZIsr)wNi0QszrD4qLgiAE98csCzRuMX7777sLPhSPbUpSUAq6(Jwl2WNOcxx8cpo3ZtRqp4CZog6LnZeM)w6s5pmzO6NgMRTd5pGJ34OrbMTc25hoZMe216jxKc8ur(mbKboTsvDoGdqGeMAKXk0ibrvoJWST(X5fVkFyYtIllafdMPNq8Ovt3cQnK06oeEJ0(aRHrKwnAdI)0QzKYhEmYOMRxD97jDnXwxEiIuA7UplFdQnY(8A4WhBhUsCFpp6zm6DJ0H(Ipqyq6Bgypn25EZZQSqSVkm0R7vHyTB5QYnTYLstG9EjRLxyF81UX6PljrEg3gmPlfwWPQTaSFLtkSLR(wT7mq(P4ZSQ1P1tXA1PmmBe3P2JdVQRaIbsEo3kxPCXdfhMUbUHdOTTVCR0yu(OQO4w2KJP(HimrSNAvxoou2f1EG0JQd(C3Qp)X70JP(R7KWz2XEUUMXvCL8CfJ3xwaXVJFAXU1glWIDJZolpXEiG8fUKQT9q9xDGMpLV64rxC6w9863xhmAvJLBZjOQbui(yaxe4grBj096UE2256(Cxtt4U3L7E9C9fcx5R5(8q5CRNcWQ16m3pNsHJlo13J7Swch2c1kfrOmFJNEQNtN93KZgNKHhSP0H9TRpE85)UHw1nR1ptN(Bt6utx8BrKA(qtku)rw0l55))27Qz324gi8ZIUiSkWrvYb9sRCkkAYHEOiffPO3I92OvXlGSuG21jiag6zVCgYH)oKlPKSHIrrUeyTlx(ZWHZ8nFZWV33EYpKF03Bc5FT8YD0LKnS3mR9Y7iuZneAryUuXpmQldpfX8vvHZWL(jEPfnd1FeDGqT)aQmy39A5powP(34)OuK0eE0OwNkpKkRY7PBFBT7(D6s4GI8t193VtgwNoifcHlow)VeEB5Q4QzVSwqGbosM1YOVmUdIb8fq(Sc5oXJYhASXx(c21BErZKKqi9rioypvOKHmUt)tY6hHLpyWvJ6U2gOYmbGJ5r2JiWvRwKHUGSveBafo8VuVcdx8M3FxlHI5n)UYvrZ1OVue5R1TMLq01f3obEjTInJ7w5Ekf0rYXTxwfuel7XdVhn1cFXl6A(4vZMoBUEzEGDWSorBtOXQ0hTgdcsz8HFz6xgp6xsfNfUUyIfLiX44vtYxAIF4gkRNFlcy4dw4mDUcEgEo5u6ukxxctE6woE(XQChKsK7AA8ykf67S714PfVc1yFyexj8n0vxnj0gWx5x3(20AwctcHehNZ6LATbJk3iIObmZ9A5L(5f8)QvUMPpciGaeggOLoSvoWXaNmCbdAsHNESck1uAeHGa)32jxqdEz5rcez0OfA9HihcephF0hytozly48IorA61Z(EfEcFjMTCIMdo4(6JteBEkxQn(hvYcnZBLVE2t0O5ue2mTbg4MW3)QzOzAxWCZiZZfnOHKur)3u8HC)nVfjezeR0XuDaAsd34aDpD(uEVzZaQdC1ectRC01CSf3dx4RqwnpuoZtxCPUupgHgOg()sEqHDtzj5v4gSmZYPGlYohWdxp5MdOoLC0Havp191(atMbINLgn0Gt7gs1YGMnuXcvDkhsD2Ft2vx0Y6e2CwiyEvBFbBUJ8(39M39tIdC70MNdMM30J2tlRtyBvgeJprxZVCkK0zsqMlN(JJRYyhqsBhsDyuIOChrcrhi7M1n7QXigwd11yQA6KsgoC3amrEBZ6ppu(4WKlqsohsuBxsbEaYjkOvsxFA29LHIGD4YdlXX1CCnKGQzScDy6O07GCUPGZeLS5ZsV4hNMbHl96)3RVIU27pzYvARB1(cJHyRzduGHParUUzvFO4d6UAnJqh83jzougdJq6gUYEgL)gwuaQzDxtAzgpcWfzmsyk6Bu28KTnDx)NrdBtvqDU(ELNjMrTi0s4l0dAFhtF4Hcr)yctxJt0WHWcJTOYH9fpDsoG43m0wo)b(Lr6r5oDXMaLNr2cYn4oxTBDW(AHsBz0ISI1MdUqAr4anHQQrckD(RT)P0d5VT9EKcfGgQBXe5VPThnMZjzo2UZdI0V1qyDiFEH9fv1tO24ofoFiZk(kKiiRXPqHUPQ)v)uSjMYohuEVq(PR(4Ku1PcHnoVroewULG7tLbNGqUDAiAK07SltMrqHqcajS2hFZFjbKB48nlzm0IAXA(5cD1i2dUJf1KrieCQXLvNorDTqOxsOBnQTfggF5KWmtXr5KhEGRaGOcCWFhKwIKSkz2BTjrt)bDoMsbeqUs7iwBxQt2A1ok7211)ehjVNczbULUmKpQQIKQQqBouwSktR9rfeoNKeuRkYVDeFVi5pleKl26gtKm8Na90NkGIotKDb8TtKMz8OewbpjMDezt)BUx2y6l78GAYS9oHx9c3hUwbMUcXaV)S2MmDb1j3ZI8DrxFU6IGFwAqJ3dWcW1XvoO4)Wl83jO7iMAy4l4gs5CSCUbTiALoIvbpRPTr6nH()fpvenAHOxtPcc0eZ40yUOmn54bKkVX2t)qJV)MCxVwLJx4smpWXnBzr3LitCP1qW)oHP0QR45RJ4acxPH17nnEH4)WJVREt90pdLwTOpZ1WZyHvS21AyoOVZ6AmqyqWNq0GX8ugndWPywbLOQvTRxJLwGnD9nyDnzLXmIyh2Fm(yLHse(C6vDqumiRy7OQXHTN1b1eKZppSd6I8o)e0gf3crkkq2)z(JmCH2nQwi(990U1zLpKd6WwN3qDozvee(FxFRQArb1GsiHjAwYvIbzmKZyXYE5nrGYPSpbo(HmIxfIacfk0LsuSt5zLnWw0FxAdovu4MME0NTu5HbKXa1xpkECU)Ote7mOiM(JPr1osf7lbyqL(nobqyKNG4)pZ(ynZgSfp9j251OfBB(zMz3wvvnmYW0OE)n6cBfXCMbY4ftWwu33EULMrqlMFrZ(me5bw9LLIabdidhlcvpZrGqytZiwh3sCG7Zgyle7b)JTlBx12S8N3RUsCvHN0bBySY)idznnBapNEBr3aYXz5oDokjpy3Pz7vf4wDS6i3JLlPNqVTZBOF2mY)UXzCU518W8lvlmOl6Zt)(5cla37(m1n)tUNifOS7OC7pMjbW47d9I)9H)7]] )
+spec:RegisterPack( "Fire", 20230711, [[Hekili:T3tAZnUXX(BrVulxslTCfLwT2jrsv57Sop74YY(5VjqqWHIiliadoKwLsf)T)MUNdm3aqIAJtIRkX1kIbZrp99fUE21)81xTmUMC9pCYXNC6XF6SztN9238zN9MRVQ((TKRVABCY7JVH(pYJ3q)VFtAj(J3NveVeE5QIMYe6pTUUEB1F61V(M061nlMMuS51vPBAYIRtlYtkJxvd)DYRV(QfnPz1Vl)6fox53C61xf3uVUO86RUkDZxsN50LljSHtQsU(ky4V64p9vZM9N2nF38FmUoz9U5ZoE6SPNTBEZwysNU7729DIbE8j4a)LkYU5ljlAwTAAfDmlN2SD38vfL7M)ZKnBlkJZ2n)xJl3Q8YN9QJ)m2lJtBfF8WID0U5P5jznltZVz38nX53VB(TXLPXlYGXvToDfDnOVqzXMDZ3wMwuMwthtDb8I1KYCy9skwQUzp9vNCmUEFFXY0v3R(E4c))8U8Q6486x93YZO)2VUMKdJ9w6E4)HUMK6A6)sF((uC((jYMIBPN)RskkbW1Lua39LflYIRQ3nFDC5Ye8FvLqYPhIcL54nca4prUnTY7CaNRK1KK3VB(FPG(3xvxsIF)0RVklTQUcqvO4elAQa8HOTRJRi0F7hqeq6ssbAlV(lOJHEyjuGiGMqVNAFLPllUlNIAKa)bmP3SUUk6V3S8MnK86RRPOrpYPAr8nrfRIQlttEFfmrN6DIGx5wsejNSjfUKPqGz7MpA38U2SWfu0c6ZH5)ngZpGwxMULn2)w9AsjGxuKbtcDrQxhdxmRlAYOOtlOxanvaI1DukTDZ)s5I2oMce5WCKX0rq3rnaAN6BXU4JZPdmhU44JMEd2qF6FLUZFjDx8fuS6kevFBzrY02dxsCwwe7pIGR6qa(sYM40CgGtqRmT69lIw2ugZ2np8afvhUCJKd(8DZp5ygEueJlKcMKeqbq2ZmGSI94AkRSY61ueYLr3vsNN7kJ3wPUt3wsULYazfL9wehH(q4Os)1tC(RNQ9RxEbDpIycSLu5HttOux3ayl0XCSGpQNDe9m8wpNHCcfgLfvDFoDGao4648esP6HqcsRt3qIQlIsuUMPG83kxEFtgD9)upRV99SYfcNWOooJsmIhJpZZ0SkJ(cvuIT3tmW8F3kD8YukidUzpcH4C2tfBi1Rr0WfekhrcdGFBCn(BP1t7IUhVKeinoXnpNrsebar5vQgv)fkyVkOIQhnke4poi(rTSrw1uEpYqAnjQQjp69alDquvWbOsAPV99)oKpSnLr3fTKKfFFljhdvvCNTvWLhowZoE4NRHbVpaEH8Ln0BteKsX6skj4ljw2w0jkD2ckMjUZgMWKHTZAxYku8hUGMICOSBJUBDAgjcEpkigeWPSnwxuhvHYfJQ2sYYQIsb0gGDhdM7vyc(GG03NlF)XsUqSTk9EMK0WOqg5(zenUTUqUraHCqaxAfoDWnG7vX4PpH1rIe6EHmF8tyLuOJ9COSgWty1Om0ifLtvqeg59zdCvMWWilwTk6MKLiUOKBU8Dm4c7sFcfnjqfoPmru4jd8PJZ2ua)7vP5PvRHrcARYg93Jhc(4wu0W1vmJQXXuKkYuFRUOIoq5S3kNnAlLuwCrng5IKUHQRYTKLrCCDgJCnOVnfc8qUvcMVVkp2tPGxXs5NdlJ0TlS4joj75S8pG)eUgdKYnPX0DcD(0FSK1IYddYV5qXBsqPNrnBfV5NGNkkkJ2j(yCJckJ5hTQ96WaT6xPkvIx9FdHKXXG(IMsq4(FVbWCAallaRlbvnPVFLcYgvz27kYFjDuBAYblpaCHkUoRSrbVzvDr5Mw9gyixMkB3TEixTLaZRIrmWe2uIxvQKhGA5RPWYwR000(yCOBMhHofi4hqLgRG0jo2IPgEUx0Ljp(L(v4Aw2KdADDdrzH5Ww2sZuauFXLdycWrcUt8PMEz8YuQXTuC14Y3BCR8tSNrVsGh63EOyTBo6wMQHn3QBeflDZgcDMQjGjsXut0l5yJmMzCgyvt3n)Nxdys3LMrXxZJRbfMH3HAKn4Lb7vIsHb7p0oDCgPZfyRf1GDWO4cQ6T6hIG6QYP(pbPg9Gh5Nc(WoO9bZvWRctRnSrFhikMpTgnnRW4K7KiXgM4B2nT2q3WoGnf14UkUFlg5fS5G6WJGwnIJbTvnnlqmk0HrW2zBXDGzDAy))cZ07R4Jz38FegKB2saQo7ktNJkNF5pUUGKN(b6JGJa4ZgU5PjGdcaYPf0d)Q0K04SJGdgYCUHH8Z8SaSkFEXx3h83dcArSMYQBzBmoOTDqN7BeBI)qKCukCFO)3pqVAIR(NXvrGyznwqJCFHAa(b)jzAOt3Ioatyd74eqsMgFlki(NOCvz8h43Q282OapuvRvCwlKpKwXqeSEzgdl00oslcIKfN9L2(2EZGYxaN94K25XyGkCj1HnF77d3JEV6MBWj(DAPpLxh1T6PukMtDzV6jMAAl3tAewouDJJa9ZNEmka8it2ivUqAbgrWoQM()PSOOuQmCXVEZcsPpDQawu4uc0oFdfqZOBmwauwRgQmDxfTOiVPIACmP80JJozBccSOmcULKXVbp3MtTeQ5xSqxstpx48VXY7Me(PnIGhwT7gMmDqMeLdMI8ug0NXXcqrrLLoXub2(5DvxyTcFPqYiLuTqyNo3Us5eFQOfetbJWIfIbELkIzaIjyiSAnjJEAVHYWGs)qm18Uv)(wldIH)aDwD8TXPzWUKzXzorG4byjjf5vKskfYudZh9ISCqFeI8XdPcVk8RIw)rau(lGDmh3ZjpIouuRRLZd(Kp3bRgAeBzPGYLeWIo04psErdyTf7CKrwvBJpHAFh7ale(DbsiI0LIVDv6sU4Z2z5iUPckoBMKvrcQUJk9TKY2LWWDZNHaK(7DyhtDl8lnHeLxCB81G4ekaCvCtwTRaRflD8tde8reFZaI)1mxzrXWj3sagVmanY5N(6sF4ii5mPQAToCzAvs62mQ9pubL0JYgWxpInJJq1j2COFnVlUCRXo7NHTqfb8kmvieURGa1Y2psLtxq4osyPHzEaIX2gqTiMnI6H7fUOfrzdqkO7xeHz1Qw3dtbjXLzuEfhbJmvOTmIHKIdhLkHKUzO7kkrJnxbUIaXGG1GBljW3IQGo9IIH)gVCzkCoHnu7HBC1eyTkbCEMtZqf)Y5xGudu)C57LD)rS9UqgzC2DX3xPkmoUDgwYq452OImBkj3exUe0u1KyaMd8aWnKgosiPJxmbod0AoqgVp1yEo2ry4rHGfvmoMy4X3wKbpnYoyG4RUiROyzgDpoTn2Htch9w892wGevTV0LD4x9dT5UlEzfXI4S6k4UIrCtgy7pLiQkAr8siHks6DC7yZrulY4R2n)m6QSAfjreboR5pq4qP3m3tVoZIkkxMdb(R3BMZv1L3AAyk(QBILNJu3tc7mYoC2B4abkTADmfkrXCkkxGAPxuIPiGUVn6)XuXirUpV5sspevLZDaRdo9U93RmmpmNxt(hnPB3sjpaRmq7)IQsVjnJTIY4wz80OtF7NEYBMPjB(nhJ(LHbk9bDce53Bkt3ersYs3wnmmLp7raDe7tTfnq8K3uuKNLwtVAsR2mOD3zpHDN(Q6iyVTK93VDnaNJRQs3KMX5BK4myg0FBtevem4zDMIdsOHZPXv0yLWL4K4fLu7txtOk7UPPknzyqh5r1Xe5kyRwkV1W86rm4buszrkMykVI5ew6b9OwPu4V9vGaMvOA()Fu5qqucOI9CPFgv0hMLm3Lwros6890)jrUMoMl7SLH5llqEMrmjyc3KsSq7xIH5o(gImseGK1mmMxutWfE8TvQIUawP3KPI6RyGKnXGUa3gN1qykKY8qJKfpmbUogO1qCDkeAIKLWZZoyBLeZbXCTJYbgN0JCcBzOiqnmT6e67W0kPvtHTKsqUIqXjjNMDZ)HIA5BYGNo901rTR(wQi90fz8Jy195jIDn)9)RFH6LsLTMicuMAQ10VNuxnvGxUuaCIUfHn9NOsWKL5eL8vyQ4bXAmjEjzk3D9x475Gxh5JbyFOKScwdvIcbd0L8e6)dpCmlp1cWIWVsuX5CWQZiTeAytmwypIIdPT1lG8(BSdnqoescsEiDK8CSUsCLJe6XAJQU6U5V7M80A3o(e1pMITaAeWq8wwqyMdI77vObImKPIAm15SWy4SlA)fys46Ht)PBUHWSzKkASewZ39LFfd1pfC0fO4oAwGW94SnwjtXzEeKWS)096lryRONTOu2r1qzejnM70cBQwEd0fY9efLi6hQPBeDPA5o8S)exkQyE9BOPI5JJo9n)Xp7SpvtvLZ0WN0GyUYuaPrTGoHzrWo1Gnq3aGrc7CpxQsWtKXaZsJiZBDgjIMzTcKpdYaWwZ7fy1VJVou(KSfsn3kq(3XvYSXWDmV1fntrzQAjM40bSy(u7oFszrOVf33JCzMrMGnXaJ)08wuF61BsztnSHI(hnX51nBOQ5FBQULhsejtBz0yy7sJ5WS4uvMNXXLtYyWF04zS8PsbDmWPiuuTz(DLQ72I466SbCI7NQHMtVRO6k2k3f)EWlRvrRkP0f77DIXS7kQVkGY6YMeCzwcUaKeTaDi1(Dh5BzCfYyjtNMC03crXG3)UxpHM3hBk7fiyyHtIPRb96Df4CCKHde6SvelpB4DKrVHNp68137m6kON9vPQ2DmqdbpVYz85KufLfq2ddUU0rqe(Msu16FG(yU2XcwLFlvQiWC8DjPjgoEQv5PBWbfLYgJkR(qgD3LIswkb1P2vEsEal3iisIq2pmXzKbJ72bUFlr4KVVsXbSil6nOvmWPhsEfWd35mDSv3UGE5vulB9avd5vxwugeI6r5Foho3lIIBcxJjkUKkpN0E1CqGblILBxxFh2MhcaQ1IIS6PQbfPxBE9QuORB(Ze3K(9i5)XaB1rG)xdWwl8DaKf4XHzZHIjrT0rmire5dBPMXNY8MsGGTUVVQAD3KJq168QdHL79BUN)7Ljgm9b0bNXy(5dy3nDXZaW9Je4ue(p7afxSftlI2XlMDdXg)iDxcogsufJgXAxZnoy8vvCfhmPznKavyHGtGv6Fb6FGpdST5WUHNTCv0ZvRPRAYYIOwU3KWg4NOmr6dnIv0qAtl1u2xRCtPSpBVAEfwNFN7EyAPH2HQ2tCl4xLISO2bx1VfZLToYN35embCAZleLMyxOuAE8XoZUPVo3sw7uT3tQ6holc60ZZh73Td9HePBfUu5AOSaDvBfQtIQRhcuwCQVnwXRUsfc3L7GnnRKC2Tk5(ReI9RtfDHIGCaQiXygpvx0ONUA2Ca4uSmQMwPpNQMyugmP(8LmVqGQ3ko0c3yKuKxxwKvzKVRCp2JUEog2mM1xqkmfxX237M)ZWgNhzB(UpGxUN2bTXWsYdv7q8YXu4tcnYax37t0eI5m3Q7nhs1aRAMISNAAT4EO0D6sM6XsCkVjzkuo7SsHYmvtpatLw6Vexs3rQiPbbwYs5WxgJx0DrHD8uU3fDj(Jx)Wbkyl)vwd6iW)cVc(rO430UvoYeP3DAA6l57qRgHbq(qnM4igHkd934Pbdf4xXZYZVPfUBTPW85JTByH3e9)jSU25i60DZ)wC3YY6LAS8GuMGqhhMttb0XkTSXbag3r3kYW9XO7TRvj2QPNjQG6LOpr3zKXR4lAfBrerkK8JEWKWdoCNKoAcNuMevnuWB0(vyR6mOVfdXBs82TY7BjNyjdmopx6FNNty08gf1GBu(wGIBDa1RttxYxo3N6J1PjVVv9r8473I9obXT2zyCX1tvgG27XsG)vzrTmk)NI2Lk5dZswtLniM8FG(j0LmUn9)mm1fcywwgbY5x1x1B245lGvh4w)i9GzgiQqJeroIRUHk2SM6iAIkeOQA6U7m2A12jbwRiSoZnOaPEtpYHgTlQnPLLfLrPBWgOJgm)m1XTIQsXASh5ymQ3QoQ2chW8M3hLSJ0aTheY)kNevknjLLhVS4oj74lhHQDrnXHsE)xi8gWWVSLXeuV24oOlA6EOwqxYNvuAYD9MFPrfTciy8xQRIYD4jV9fcRVudURbFhUBjuujyhVHY0wraeijZPiHlazTbQHGjUOJhe8DpCqfKZABAlNV7)mzD90bKtYhXD68dZqxvJXL2qYhNwyqcpHQsijBIZVhtE8JSRTzJqAOsP0zAjXaYTkQW0eruUxIMIc(sFlKhduT2QyuUWuAvaHgPXlYoHRBTOzUeSlnzPhEOoI0GDBMs1bmihLzf6wJoWKFkL(mVU8oHkgLwXHWZyJEyzTb3cEVFO9y3vwLo4KzudcXwUqYoxwgFtroDNtruRx7SiX(82IMPT8TykDB2zFyvVdI9CeKPBWCJMxJZUp7u6RehxjKE4k6ju6f4x2JrlGqJ1MWHvs3Bm7mflZvv6rTAHAXvGeONuc5KfRCxfxj12jz(VLpRDCA8HEHCISvgEymJ0CkqRymtVcm27zgotYtC6GkeEDp1R3AO6Ov1zpFU0c0bPQ58e0xgQpSLFHp9Oy3S(kV)oksrFBKGQwW4NzBORIJkdJMl0UZtDL77S4pSu(plU89PNP3F58fe9DyfoDNv4CFRwzde3okoWN39Igy0FhFyVClz652E4yt)owSx6EhO)bXiwghWoN0wV97Ja2PViBL24TLT0LDsARA4UW1qw2GMF12iC8g0bMLbH6auEQI(2080ZamsaCp(AYQ)q503Xh06ukNnIQGw9Eqp8kTZoa3bDW5DYJ2mOVsTDtiKEVBUq89rcZBmTiQsVBp1wF38IpeOwaedm8Z)uXpYSOrZPW)ILrwKuwczl8HCCRVmETsJRnb)VSLxtTs1abvOmpCuBz0H0IFeldC9vvok(WrdUHT73uSBGaUg9gH(UAnyiunxMxwfnSxyCYJsLMwVHA8n9L5OetYxhXXTsviiWVAAER((USw30VhkWv92sqTJ6oOD9hEN1GtUFE38eS8sBTJ0wxtSrVuLPl(aYlebGWw8IwZLiiK7jADrW9Axot6yfM3d9qfi8AueNGHFJAWY0ZuM3(73TqasFze(aBLUbAsxM0My7fWVjvHAdxHvosbB2VMxw7gvfynZ3oeAVjopE6wa3i4yJGX1UzCL6EEtGA)DRjMplKDvcaTOUsP41OYlUHfiVcHuIVrvdCiZOwLMLH(rlNYmgJd4QwPmt7nWXzeRrlf9Np2HnSwJuSRw)IEpjsl2rc9iTc6GsKFA7b3MrEIxx86r14e1rWsfEGc2yuDyBRwMbPmDubgKsq35RnJgdEsGvZyH0cfduiraRnOSEmp0bmDBSMFoC02daopT5HJNbnrvgKO3i0U3qp4HDhdhwIjgKDFgOZ2eGjbnV2jktxsAq(KSwSVCjSEId7L4bkBBrAgwRb5KSAksEtLclfhp0LUtSPQUGvLlnWhab6JeTjpjWX9ZDPjcFcPqtGXyYAKRxCgE9RaQnFOlLkytfOtgfqSeQ9fwSbVHSPDYC)yxkgWMU1fL5Wr5w6YQCc1)5Agv4T0jfEQ8JObugoL50DDfVTPKcOA1CvNFPNqf(sOWB)hnPy9pYQGR4gking1WKPsA10DF3)Bk0T5GpheFjZtSWJFPRa)8sgBtNptGXthZ4zFyc(TMWXEL3nBg2EBMXElCQel2L9lHJB3VbHdAu3gWbNu(MZ7mZdHVQyum5DvLJDUaHsrqByK)Oy05c5noigWPh)suSLWCMufR6HF5bsPSPwvT0OXm15DwRNx4(zsD9F4Hd6cW)Wd(ZuIrhmUpG0hEOtqYeLLXompx6VaVFXlgZvdvic)WzhpzI4U43HC(HCUbCTyLM8g27KWN(mVaN4NhHw51zZEWz13zn9MaONvg1MaRpQlMRssYGDNZYvYAIFZhZtXzFmxS32bpCtv(bkUrmkWWvwYHJdqFFiFgcwpjFsVZu6jViuDz8QzN3r1JCOCLCv5iHN8Xwqi(tc(AtEXlMnkaa6CnEEI74)94Y41pNxgHNCVxgbFTjd6UOL25Z(iPlN1cTp1LZPbaYmA9LdYeaFMN0A6JXgunYD9BN5Y5hdBt(2NjBhmNxpoDWgrOJz3jyG7tlUVkhgaWZT0EbBITcEKdB59AJfWR3T758B4qohxIoCxN5CBkQFFV39m)pX9UtKeRK4zy4jp3qI)O75xnW0gtTRyw)XzwTu6FFdmM9CdTXpVPFKq8uysJvF5WW7MzUt98nP7Lg2xz84EdPB5elt0mBM0T5GwFN29eINh859hEHP5g7Vfy339oeTaM2pvKye7MJFwAPpgIuEXQ0mzWUQMk174WlETzTZS77CnkrpV5iWdUxOwnkhLU6Idc5kdVfkZOXhyRFII)kuDLRIEV9Ad6UawW9Q3(oRZ5vTexCpI2IBX9ZLXEcUP(d7Mp4UqUCAVqT14GNLWwJIl3VDAT4)5D)ERf3rRfxE9sXvKradUDDPv8OXgrp7HhGUk(i)oY7CC42Dt8jQRllmMWIIJ2OhIFziRA9zkO60ljovcv3fMrQdw9q(QuGp9QZCo14CA1hT7yspV9HE6t3HSy9YUE5qB1aSOc5fbLDSQ4FLw3WHN8Wd6yabMUjJC6SJXE5s(Wdst8Rd2zUV8nhpX)PxT7x35D0NnGdK)LuRLw35AE2EznD2wR1LyAh5Hahb7wvD3heukWV3VQ)9(v9Zu)Q2p6QPcFDH4)CfYTNqO2ceIThFO1EXyTGQHeO)3qJIoGWqddkKaOoAy00l9a4ttOYX8Jt4gFc1OYk)RMOkr0eTwrKyhTa6lpJDz)m0xKvHTkDlAtWRq8JpWYiat(8Z8bD6fLitGt9hVUWSF8QuVD0yak4Tz3oYoahGwrHi3BfcR1LLv4rO97xes5iJoEC4T6Jttc9wz8ZXkK6U1e)CSuwnC4NLfXxxfwA1ux9NyxZDvxYerIPH1YGvxN2oOiSqEsHbp2a0hJXckd88onvrT4lzSg3BT4xngIg(njSBtg1JUAjArpdU1vBOD0bEhgvYsqWSiKXo6YSx2JnPq73WxsNPXjYm1Z)3kWLk60hhy3iHlm1sWLjwKGWgyFbkz2JkpnbaRTn91Ncu95aUzdHCWK6XdIcJTTxal7xGXFaAyjp(UuRk0uSuh10wCJxmd)lTc8L(BmTnsnRz3JqRGVWPubbv1VzsdM)dpNK01RxVSQy3FjkYwHOa2PhHo2Lfopnb5TuLktQLNZ88Yi2)V9A)Ppl0uUkcnh0u21C9LN(j8IYtxJr7vA0J2HgQNyD6oPoUMSdg7LFaGMfyxoHZ61Sikh1BkFeT5FTnhunHyYJypqs66kmKCNJhXqBevANIPNoRYUrhOM(xCuopaFghnZ6TxIG6VdWE(Xtp7HhSffC5fNWKU97DjvhDj1UzURgdCf5sEPhDCvhexIX7Dp1ztdqo4GaWTEaYg5WiBEGN7(v07VPDdtTYxRUI84XonqwJBjRbe8DYFJd8fzo4fk9NnXzxHcE2tWcCN9qUWsZvD(KXgLEwynkThJwecVCQ0F4E4Hd8kVzuRxEn6fCHc22aIlhJZZV16CBba961ZoCf4llG84Hs3S1NWhTzlnJQlaOzXSZMOlJGdAL22AKDA)M8a4BR2Uzv0(uMsZxWY0HWdIEUAlI7UhQSaTDXKUzBNtaCtGRxNJuVwUPi7I09jE5YICwaI4OZP53waL0pOjdlOcWodAgaYauYeQTnl(EWNIjuU8C6aEkcLSUOOIy46r6lTbJqzflxAMY2fDSXz7MiXMrjsfmD9sZx1iC(ecb1)zo73N0cjycb(SPQzZgfDCTFKo)EFlgYasK8oJDL9op8GN0rFYiJ06PZfRPpPut)NfMl7nQ79b(6oQ39bodURX9HojPwL2(aNbN1Z(aNdTIz3dBi0C9lWeFRk6V3S8grcafuDdRzay6eJyRuYYK37v5WGZWJrbfu8kpIYsiHWMDBPK2z8HymSm)WCKqyMzSF0FReuVuubDKffF0ESJhcrArY0Gh(oDSI805c2ku7P1Y13ViQvtmD1vo54G7edKiNb)g2dqZVA6mfthpe)LtS(Ltv(fQXy(9F3fdzJLtAawxv3Nt3paAYAqwuxknE5BdVgUVg0vYqMntMATbxphjJhop)sxJiaIMgnotCLZsRdJsOyRRxJTc50RwxJzqk5m)9uB8LH2vYCj27EIPNK72uzGhkWHnIQWGANLDGbH61eZca3taCEGN6qi4AZSp7PTYiMNlUxk8TeT4pf8q0DJzBWy3UknpTAnMBdYm547rtF4JBH0)bzq8dctTi)P(5WPaDMSlCBHBqVutFhHZ)m7bJJC97eBl2uzWcqzzs9OWKsVhGoY9tEeZTJw95ipp6rm72EktDZhWnA9Ef4wmlVch55379m3ASmIdA70lM)5Bc3yl5jJ5MMCWv7CxSX8LgokM7)kk30Y0Ud(W7t3Qo(a3Tgrju1et(Hh80pef8lpvAAQVUBBimo7SVMYKMBcSvlY2NpBdqxZsoFt35(jJv(quC5Xto)ewgiUf9XTURsTD8kl9RwNcTuoEM(E)GeLo29XyGIjN8WdJ5q(uT2wo3Tu2WVjdDjE1yh1LMm(jQlapho)jW6RCa8TnU89(vbo2OVNwYkpeGTpsEPvao88QKLnYXksrQKjXm3f2X1nLmt1RGKOb6xKMRefbb2Fy4J5zdn6maE))es0o9dr4B2s2yP4D0H62DhJo5tCEF7g18WqcPoP)QgnqmdMVe(1Gzqn8gKDI(M4IYucuGsG(p70)QK4Xke(LmSfyZcLae4OiVHP61u1SrQC683XvEGLZKjPW9eGICxCA7viYevFta3XlXPrNuUwKeMyioy55lCT73LncqlSIhvrsU44PhptEn3bfStboQHLIDhz7w4ies5vltMp)Ev4xg56Z(MXCUUzzyz5qphNoP)ytUpU2469FgT6DXJCsomuqQRTeM(GPUIwJtM7awcJQHyeiiuk(pYAcS8OSQeDizsH3IUcoxSPwPidzM5dRYNx81H5S0D4NbjLXTAdQBmRu1u3FBeo39tvslejBElhxpzKRBb99R0i1WoLyN4RBKqabfI9tnq1cdmI5xs2crwb1CfRqzqgoKpKwXUxTEzMKbXhpPLQnVC9SgVhYT3Bww6vmSXNaI9VjO2u17JZZEFB2ATQB1vhfwP0ZpvjUx4D9pF6XOsbhzsa7nLiAdF9xYBw57M)1y3k3JoHy6ratzB01au8kZWKtY7aRtNMeacUAN6JuIX45MSgeXVAWQyC(jY6R1tpA)8tePHdxBc22u0HUdlujKhq8HwjCYHwJnUnPWTUoXlIR49d)0CBM7RjzB7k1iCKwgSGbjkAzMdmYjc0f4Uf0FHusrhh697boVGpWBKdFMU67jjz3xCT5l7fI(O(EdRqkzrQokAVTShFddzEgzvT9LpQXySdug43fymigcwSG5UQ9gX36pfNRsYQiHVXncTGNZ45CyLP4HzbN70eImXH7yI5TFHNHV(NT7qpPRJTFmgQNl8LVwkAa5YFyxQyPFpCeXqiyUyMs(B467xPmDWUCMGxPRV6aTCuNirU)3)p0KpcuIwxB1fYWJ6Us0QvuVdgf4ArdZj4f9OXo5Gl9DMhrPx2EXprnaPwPN1fgkI6v)r3FSwg52Htp8WaDsWKaBr3wmA)vZBOZGN8Z06lB35(4daceg(g3AzdGBbb40mNd9B9K0h7oTl7PVtD(r(j4K2xKR(BCsqZh6Jjb97S)VY1UNWDL8(f5Jw9FLFWS6a)BOb4WMCBu3sl8gEIrJh7rjc4D7s)cwAFFGlxIhmsBJ98S(mXE0vbciGZQRWFqFc9XW6IU(qyr57zNGYYWbz5jpHVQSJWKhv7oW984zAgDqaw0t4XNq8ry7pV7j9ryBaml85NZ(W(WRZpDlMVJDv)8QqFn(p8I9y9FdIxDExiEd9G63qAFyEsiTX3Lmfxs0(njBG7MHUzcN1cJh0E1zbQCINcxz20ZcPESQvlHGa9lNMcnd25uToHHQfYHXghUYrUQgCJvVvdjZbpAd)JFwGXGF4ZuCx5Z5hRS9JEGoRXQbWs0DIQZr)95UVGB8uXhWmkbsY1)WBpf)YjD9))]] )
