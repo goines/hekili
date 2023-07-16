@@ -162,7 +162,9 @@ spec:RegisterAuras( {
         id = 360827,
         duration = function() return 600.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = function() return 15 + talent.regenerative_chitin.rank * 5 end,
-        dot = "buff"
+        dot = "buff",
+        friendly = true,
+        no_ticks = true
     },
     -- Gaining Burnout every $t1 sec.
     born_in_flame = {
@@ -207,7 +209,8 @@ spec:RegisterAuras( {
         duration = function() return 20.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Suffering $w1 Volcanic damage every $t1 sec.
     deep_breath = {
@@ -255,7 +258,8 @@ spec:RegisterAuras( {
         pandemic = true,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Your next Eruption $?s414969[or Emerald Blossom ][]costs no Essence.
     essence_burst = {
@@ -276,7 +280,8 @@ spec:RegisterAuras( {
         duration = function() return 8.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Rooted.
     landslide = {
@@ -290,7 +295,8 @@ spec:RegisterAuras( {
         duration = function() return 15.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Your next Living Flame will strike $w1 additional $?$w1=1[target][targets].
     leaping_flames = {
@@ -312,7 +318,8 @@ spec:RegisterAuras( {
         duration = function() return 30.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Intellect increased by $w1%.
     momentum_shift = {
@@ -320,7 +327,8 @@ spec:RegisterAuras( {
         duration = function() return 6.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
-        friendly = true
+        friendly = true,
+        no_ticks = true
     },
     -- Your next Emerald Blossom will restore an additional $406054s1% of maximum health to you.
     nourishing_sands = {
@@ -393,6 +401,7 @@ spec:RegisterAuras( {
         tick_time = 1.0,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- Asleep.
@@ -407,6 +416,7 @@ spec:RegisterAuras( {
         duration = function() return 1800.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- Able to cast spells while moving and range increased by $s5%. Cast by $@auracaster.
@@ -416,6 +426,7 @@ spec:RegisterAuras( {
         tick_time = 1.0,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- $w1% of damage is being delayed and dealt to you over time.
@@ -436,6 +447,7 @@ spec:RegisterAuras( {
         duration = function() return 10.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- Accumulating damage from $@auracaster's allies who are affected by Ebon Might.$?$w2<0[; Movement speed reduced by $w2%.; Attack speed reduced by $w3%.][]
@@ -475,6 +487,7 @@ spec:RegisterAuras( {
         duration = function() return 1800.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- Your next empowered spell casts instantly at its maximum empower level.
@@ -492,6 +505,7 @@ spec:RegisterAuras( {
         duration = function() return 5.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
     -- Damage taken from area-of-effect attacks reduced by $w1%.; Movement speed increased by $w2%.
@@ -500,6 +514,7 @@ spec:RegisterAuras( {
         duration = function() return 8.0 * ( 1 + 1.25 * stat.mastery_value ) end,
         max_stack = 1,
         dot = "buff",
+        no_ticks = true,
         friendly = true
     },
 } )
@@ -626,6 +641,7 @@ spec:RegisterAbilities( {
         gcd = "off",
 
         startsCombat = false,
+        disabled = function() return not settings.manage_attunement, "manage_attunement setting not enabled" end,
 
         function()
             applyBuff( "black_attunement" )
@@ -686,6 +702,7 @@ spec:RegisterAbilities( {
         gcd = "off",
 
         startsCombat = false,
+        disabled = function() return not settings.manage_attunement, "manage_attunement setting not enabled" end,
 
         function()
             applyBuff( "black_attunement" )
@@ -918,6 +935,15 @@ spec:RegisterSetting( "use_hover", nil, {
     end,
 } )
 
+spec:RegisterSetting( "manage_attunement", false, {
+    name = strformat( "Manage %s", Hekili:GetSpellLinkWithTexture( spec.talents.draconic_attunements[2] ) ),
+    type = "toggle",
+    desc = strformat( "If checked, %s may be recommended when out-of-combat, resuming %s if no one else is supplying the aura or otherwise switching to %s.\n\n"
+        .. "This option can be distracting as some abilities can swap your attunement in combat.", Hekili:GetSpellLinkWithTexture( spec.talents.draconic_attunements[2] ),
+        spec.abilities.black_attunement.name, spec.abilities.bronze_attunement.name ),
+    width = "full"
+} )
+
 spec:RegisterSetting( "use_verdant_embrace", false, {
     name = strformat( "Use %s with %s", Hekili:GetSpellLinkWithTexture( 360995 ), Hekili:GetSpellLinkWithTexture( spec.talents.ancient_flame[2] ) ),
     type = "toggle",
@@ -925,12 +951,21 @@ spec:RegisterSetting( "use_verdant_embrace", false, {
     width = "full"
 } )
 
-spec:RegisterSetting( "skip_boe", false, {
+--[[ spec:RegisterSetting( "skip_boe", false, {
     name = strformat( "%s: Skip %s", Hekili:GetSpellLinkWithTexture( spec.abilities.time_skip.id ), Hekili:GetSpellLinkWithTexture( spec.abilities.breath_of_eons.id ) ),
     type = "toggle",
     desc = strformat( "If checked, %s may be recommended without %s on cooldown.  This setting will waste cooldown recovery, but may be useful to you.",
         Hekili:GetSpellLinkWithTexture( spec.abilities.time_skip.id ), Hekili:GetSpellLinkWithTexture( spec.abilities.breath_of_eons.id ) ),
     width = "full",
+} ) ]]
+
+spec:RegisterSetting( "manage_attunement", false, {
+    name = strformat( "Manage %s", Hekili:GetSpellLinkWithTexture( spec.talents.draconic_attunements[2] ) ),
+    type = "toggle",
+    desc = strformat( "If checked, %s may be recommended when out-of-combat, resuming %s if no one else is supplying the aura or otherwise switching to %s.\n\n"
+        .. "This option can be distracting as some abilities can swap your attunement in combat.", Hekili:GetSpellLinkWithTexture( spec.talents.draconic_attunements[2] ),
+        spec.abilities.black_attunement.name, spec.abilities.bronze_attunement.name ),
+    width = "full"
 } )
 
 spec:RegisterSetting( "use_early_chain", false, {
@@ -966,4 +1001,4 @@ spec:RegisterOptions( {
     package = "Augmentation",
 } )
 
-spec:RegisterPack( "Augmentation", 20230714.1, [[Hekili:nN12YTnom0VL8ItstTJTSZTUozMEDAYSTV4U7JsIwI2MBKevLOSBZKrF7la1nkzshNzA2TV0KiccCiiWHaO2JS)M9mFIGA)vRHwJhEXOjdgnC0vwxzpt8ZyQ9SyI39KLWVercH)9TzldPrcIGXJWf)zaN4JkjLNL4bcSsiItFZPNUzZMbmVF2FnLfLoWJhE6g(MtjkBVpDn)EAs)410((XP9t4LF3JZd85BIs7tMZcycgn1E28mwG42i756W7LNDbGGyQN9xhn5IXaky((0cHPPE2ZqH7p8I(JM8MC3C3367N7(jwcn39DjuIy1P)v8kkznji3nGVK5L7UGNK7gbO52ibnzdFnnk39BRaP9tZDr04Noi)U87Qv94gvpt6mYD5lYD)crQV4ek4eMte5UK44aMN8SM7YaryWpj5UjeMpQs3(5UFGhDiiQCtGhd05NbiaqkK5xb62M3QY8uqGVXcbZp7EwCU7gMyv1wkG0h5rWzGhJiOYGFI9dDc5XJ8zfi9O5Kuu34V)X54)(f2YvaiF)hoUslV1)FYsHp9Uawk42yrlbu4rcOGQYsH4OCxbhCFWpHVLIhq)SiFsKOfouVAaxdE8BUGcjGeERijO2KkTTJyK0rCBeaBuCwyCaToOdSDZP4wi(8VX4ZdZDxMX8PdSNHapvMvqxqYceWV(vzwcXRiM)7z0Ga7z0iY8aQV97SfqSOQazrjK10UImwvepsg6DEa8polcKjwTeEckCZxM5LWq5jqsP8IDk4aiPcNI)6v5Uwn6oGTUrTGUoZOUc5RLxq9W45flgScJWgGzEnFBU8oWHVWHcXdYfBmLCdOnox9Wbr6PEmAKx3t1fgrscDbSPv4kn6HcXyoHyigU5lnU5dGykicdcHy1PQoIIm1bL7qEGocdNlOwgGEoNui)yqcnKWWq92o1khqdkAK8Mws(4J5U0Wy(gz8(GfqSRZ8Yq3JBookFhppx158uh9ugN)B8jmRoveoELF3rWX8e4GnAOXBQUMllUq31ywhuaqpPX90oEuAVrgThUP1uhFUyGaXzcjWzdpdPtGd4WogVtOUQVyCPSZ5iNf44wGy0rfJJhQChMsDamewGpRF7Wxmx(teCJ39LvaLexZMKkVW6PajLyA9rzMPLgzMJtR6fjz0Md0jkGOkCChI0qj1ri03DwdiRZzKi0mZ5t6aw65pq(ovRBWAKQruvqedj3aoKVBkrY57DkL2myJKqJ6sjVlwOYOvAenKrlWUvfRJw2bze5(GpdejDP8FMGBYle4SKG75WFRbCN)cbUXYYrmtb3fkGYo7xiu2YlGOXmbDrjg11kwgY3ucIcb5wsL7EnWrQ8YqxbK22m57EEOKV9LMwWDG0dcUJmZE6wIvOXczDMNLKIVWPuptswCfVRLzE3Yx6HZqsav4q8jXfLU26L(UOVDvBKiKTtuW22POnOKnSEBhA48eINKl2Ymxmu6rvzI1hXI6eRE8UeVXzXSa8Xj4p)rQiHK(aPcXMFfWYmh7b7LQ3QSNcWPEzw(2ybeQkYLLwUDLGwYdza7iya29i4eYszlAARUlGDfgdx94HdaksFppHh9qxNVEHQBHqR2xMWlF3vjDOODBunHf9x2ozOZY1nGSl4dn67qeISiz3sBb82lV7UukBDapBDvPsRfDTy5P8atRhYIOQvc2r97UzhdunPcWiYK5rd)1q58m6fYWl(TL8svjv6jQTuxPkvRSSwYjJQHeGuuU6rOypBdjjc2cy7VTIk7zMNikhcYHLDcFi2T(3ZGkiG0MuoY6bTXYdjc8dqd5rlP4ir(t4Ak39sOl83ZJaBjx(qJnWCyXibmlqvQoi4rJ(XX1w4QxClynwVj2MBUJjmtEVLjMO3e6486yKDrlULzo7f2m53DRmMbvUvfzBURCAkWYyMaFbRP9(0b1CRNC9P6PfFnBX1pf1A(D60xh6pursw0EMzqVEOEv1LfsbuAimnOJUuvnkrlhzpt8J9oWmZOj43HIsb)A5cNoAyVDXbAYp1W0PF92CC6LPHDt)6Q8AyixPmWkYHYP(HYHWP(PTg6M6IQQgDryvDtRRV7vwQYklHafQOYOEDgEwptdotvhACxTCaO6vMkMQqk9W96Ms)Vgkkf30bgz56DK5zd1Cu7zOU4BQL4Xh1pTRJB5)lBaqfHJ(FaFv4Of4AF3uNr0AYup(4oMk10jToRvJ7b1KsUt7z6CZqfvQFwo3mgKbNHtVwZVz64HTcDKtV5)gB1nTq)qH6TR5H0C1PQ46ByuRp5aFoz3d75KNAqp3m(S2gxLlYicQoal98vCNDhIdU8(NE(KrV7vsu5fFzx8tT6DKMqE469Pm2tMYAPXAtEXS2ynw78xmRvEJ02E3C2Ve79CE2v(MXE(Kl(gr5ye2ROjGlC7zxmvzzTZSq1CDgxG8Trtf5Uf3CZZHBprIDrZCqXlRLWRAEdp(4okjvvDQnYR(MJU9P8QtRrhGuOfASZidWbgKjwXtSNnJqd8ZGwKoQ()jXJ)dO65esuAqrBrZ)zU7NP3ZcyYEVS)3p]] )
+spec:RegisterPack( "Augmentation", 20230715.1, [[Hekili:vJ12YnUnp4NLCJtsZAhFmz3(7Kz2D72PjZ)U340EPKOLOTzJKOQOK9MD8ON9cqDIus0XzMKoT3KdIGaFee4JaWAK1dwl8ijuRVnE44jdVE0SbJUE6vtgBTi5PiQ1IiI7JK1WFescGF(X01b0WescJhIl(KpN4HkrWtJDbb2KKej(5lVC3UDdyUp1FlLfkg4YdUChF3LeLT3NUL)inUF0wAFVir)yEX3D5CFp(UqrFYsMplHrfwlwMY8tUl0Azx4D2SRbeerDT(2OPxpbqbZZJMlmv4ATafU)WR7pA2pN5K58RF6YFpAdLSL4N54ZxZCZCyImNv84mNlEGfqZCw8il6Dzo9VlmHgVJVLgM58WMykXdeKh6)0GS7HLZC(sOing2ab0ld)JpbcLSjZHgeX3rJPEzoUersMZAAcAewitSH6H7)(kGnvcSp65PRL24uIXqWn1jWq3KNqx1tQv9c5TeG)vzoFLi1xumfUDwsa8rII8zUYlbWFaIWcLhRycZR80(l8WtbrLBcUkbD(BaeaifW8kbTU5hxAE0ru7BZC2XqVuP3cH0x4HOZncrqPb)v237sixEOhlhPNTKiqDJ)9xwI)8RS1Baq(5F58sT8rV)mfVc(KptaUnw4AafUeFkOQubeGN5KWb3h8B4Bc8a6Lg6rct0WH(fmbp(1xqbeqc3nKyuBsLQ7igjDe3fcWgfNfe5tRYgaBxFkUdsC(dmX5uiOjL5rhyTabUqMUsxrs9tG)8BY0xIBEY4FLs99Twqdjl9PEwFYkbssufinmMSL2uKjQI4ssrVZpa)J9kFzgVMWtrHR)Yc3ygkpbylKxSZZd1TZ)VFkZzCTU9zBRvlORzg1vaFR8cQhgpVA1Gnye2aKsO(BlL3b28v2uiEqUyTPKBaTXvQhoisx4YOHUnpvxBejX0vWM2GRuRhkeJzhGHy4MFVzxceEbXpOVWwar8dkKsEiobc4YxNvLhBNKNgRj4zySEoHOIQIPbegMhm)gnxEP7PgJ1IERMK73xXqbo7bRGiB7Lfb2NxFyv(oEA)qJtBvSvrwW)zp)PvPXWHV472jCmhdo2JgA8wUP5sJY1DfO7ckqEY0ANNESS0EJmApCtBP2ECWZI4mM4BVJNIurWbCydJ3inr1xmPq2LCKVRh(WeGrBvmozOYnSGAdyiihFJ)xh(I4YFJGBYHVS8PKOkMiH8cRNcKuI41UWQIDmtPnYm)yNQpjoLwFGUqbeLHJhqKA6SgcH(Uz1GSkPrIqZSUpRdyTR3a5BCA3GviTdrvbreKDd4q(MRejxD0PuhxgSktLj6RrnP6pe)vrKmnKgWO5NRXLusDYCiJwpoS3jjtZNsEHGB6Be4glb3lH5VdWD1Be4MilZXm9CtOakB2RiuA5fq0yM8oV0LQAqlshQlTrH8SLuzoWtDkeETeqABZeZh5HsMvje58ki1rc3wM1pVLy5Amxw7LPXc81pL6KItJk5KhBMtUOma4me7ttSjEKO8sI1kdOj61RgKeImHj5mXnkgekfeRJ3MgSmM4k5PhBMNgQlPS8ZQJyE9NLpSxG3O0iMp(Wf8VFxKete)GuIyZVqm2m)7jhLQBvtuo4uVmlE3mhcLfpZefBxjOL8dOXvBWaShrWLilroVzWQUlouymC1JhoaOi1(YyE4pA687wOQwt6u7RJ5fVjRKoKpFbunb59TQNm0y5QgBoe8jUpAtsssdLDH1c46lF4UFkAjbpBnvPsllnTyXP8etRhWcPQvj2q9hUjkdunIeWiYK5rdFDOCEb9yzOAaDjFVQKk9APl1huLsllttozunKaiq5QMzK1IDK4qylGTFydv2lopoPy4kNw0H9P4ua(RuMCcocoY6bThZdijYr6SHeUMIJA5)dxtzoVh6U)Z8qWwYLpTz3pNMpHHwFVmXgw)SrF)8NtFT7wQHIn3ovtl8HxzeBqFVIiE8KUnr73oAycZpU0Yet72eDXj3WihI2ULzM9gBMS7VtgtJkFC5JbzoYPibld5oPjB4XwlwqO(EPqy)zvtD68)hyXysOWppuF5tzo)g9rMpdtW5Ry1tdrmO6jJlU5YUz7FhB1np3lgz33L(AWQJks(4qpZpmCZWUvvtYvfq1X7ag0rtg4AL0j1Fpt0(9oXmHVj43G5vb)DsXpF0WEhIA3KFQMaV711PU7wMAs7UxxLUgJulKbwrodt1pumZs1p1AgLQlQQA0fHKwZRkB9NgRkRSYiuO8c(61ywJ9mnNrvD0H7sZbGQxziIQcP0A67Q7O5gOwBjWBq627eJSL9oZ8aYMFt1HVNHgaUTsI977UD6Z1Urk60rfZJ(xbIlrMgC1V)QYA0gy3(9hyyDZNQD6lNcgQjL8l9rDD7qfv29iUUDcidoAREAJ1A(KHAHxYHA9pJTAM609SY6DOXevNPPQ4QRyuRp7CWU4WZa7INB(x3ozMUXv5RmIGYdWAxpf3zZzBHlF8PWVSOx1bWFmPBfbefd2y(4EN1rQaCT)CG4ztUh3H1M(MzTjDyTREZSwXnLU9UD2RI9EjpzlFV5iFUgFFPyYkhBuw7X5mxz5ohJJQ5AmbffY(21v3IZU(P02dP5q0pNK)QCb8khbZ(9hOkyv1PoBdP6oW(uEosBAki1AUgBmfLZL9vA93)]] )
