@@ -674,6 +674,10 @@ spec:RegisterHook( "COMBAT_LOG_EVENT_UNFILTERED", function( _, subtype, _, sourc
             brain_freeze_removed = GetTime()
         end
 
+        if state.talent.glacial_spike.enabled and ( spellID == 205473 or spellID == 199844 ) and ( subtype == "SPELL_AURA_APPLIED" or subtype == "SPELL_AURA_REMOVED" or subtype == "SPELL_AURA_REFRESH" or subtype == "SPELL_AURA_APPLIED_DOSE" or subtype == "SPELL_AURA_REMOVED_DOSE" ) then
+            Hekili:ForceUpdate( "ICICLES_CHANGED", true )
+        end
+
         if ( spellID == 153595 or spellID == 153596 ) then
             local t = GetTime()
 
@@ -816,7 +820,7 @@ spec:RegisterHook( "reset_precast", function ()
     if now - action.flurry.lastCast < gcd.execute and debuff.winters_chill.stack < 2 then applyDebuff( "target", "winters_chill", nil, 2 ) end
 
     -- Icicles take a second to get used.
-    if now - action.ice_lance.lastCast < gcd.execute then removeBuff( "icicles" ) end
+    if not state.talent.glacial_spike.enabled and now - action.ice_lance.lastCast < gcd.execute then removeBuff( "icicles" ) end
 
     incanters_flow.reset()
 
@@ -1143,16 +1147,16 @@ spec:RegisterAbilities( {
             if buff.fingers_of_frost.up or debuff.frozen.up then
                 if talent.chain_reaction.enabled then addStack( "chain_reaction" ) end
                 if talent.thermal_void.enabled and buff.icy_veins.up then buff.icy_veins.expires = buff.icy_veins.expires + 0.5 end
+                if talent.hailstones.rank == 2 then
+                    addStack( "icicles" )
+                    if talent.glacial_spike.enabled and buff.icicles.stack == buff.icicles.max_stack then
+                        applyBuff( "glacial_spike_usable" )
+                    end
+                end
             end
 
             if not talent.glacial_spike.enabled then removeStack( "icicles" ) end
             if talent.bone_chilling.enabled then addStack( "bone_chilling" ) end
-            if talent.hailstones.rank == 2 and debuff.frozen.up then
-                addStack( "icicles" )
-                if talent.glacial_spike.enabled and buff.icicles.stack == buff.icicles.max_stack then
-                    applyBuff( "glacial_spike_usable" )
-                end
-            end
 
             if azerite.whiteout.enabled then
                 cooldown.frozen_orb.expires = max( 0, cooldown.frozen_orb.expires - 0.5 )
